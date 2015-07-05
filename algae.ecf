@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-13-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-13-0 http://www.eiffel.com/developers/xml/configuration-1-13-0.xsd" name="algae" uuid="0BD05554-129B-443B-817C-3E8699BB3295" library_target="algae">
+	<target name="algae">
+                <description>ALGAE Algebra Library</description>
+                <root all_classes="true"/>
+                <file_rule>
+                        <exclude>/ge$</exclude>
+                        <exclude>/hact$</exclude>
+                        <exclude>/free_elks$</exclude>
+                        <exclude>/cvs$</exclude>
+                        <exclude>/se$</exclude>
+                        <exclude>/base$</exclude>
+                        <exclude>/\.svn</exclude>
+                        <exclude>/Documentation$</exclude>
+                        <exclude>/EIFGENs$</exclude>
+                        <exclude>/ve$</exclude>
+                </file_rule>
+		<option warning="true">
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+		</option>
+		<library name="base" location="$ISE_LIBRARY/library/base/base-safe.ecf"/>
+		<cluster name="algae" location="library" recursive="true"/>
+	</target>
+</system>
