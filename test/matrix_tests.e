@@ -304,6 +304,26 @@ feature -- Test routines
 			assert ("label_ok2", o.column_labels [2] ~ "COLUMN")
 		end
 
+	test_times_large
+			-- Test for matrix multiplication on a larger matrix
+		local
+			m, n, o: AL_MATRIX
+		do
+			m := al.matrix (70, 70)
+			m.diagonal.fill (1.0)
+			m[1,70] := 1.0
+			n := al.matrix (70, 70)
+			n.diagonal.fill (1.0)
+			n[1,70] := 1.0
+			o := m.times (n)
+
+			assert ("width_ok", o.width = n.width)
+			assert ("height_ok", o.height = m.height)
+			assert ("diagonal_ok", o.diagonal.sum = 70)
+			assert ("corner_ok", o[1,70] = 2)
+			assert ("sum_ok", o.column_by_column.sum = 72)
+		end
+
 	test_aat
 			-- Test for AAT
 		local

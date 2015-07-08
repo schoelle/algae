@@ -14,7 +14,8 @@ inherit
 			row,
 			column,
 			diagonal,
-			column_by_column
+			column_by_column,
+			multiply_into
 		end
 
 create {AL_INTERNAL}
@@ -83,6 +84,18 @@ feature -- Access
 			create {AL_DENSE_COLUMN_BY_COLUMN}Result.make (Current)
 		end
 
+	multiply_into (a_second, a_target: AL_MATRIX)
+			-- <Precursor>
+		do
+			if attached {AL_DENSE_MATRIX} a_second as l_second and
+			   attached {AL_DENSE_MATRIX} a_target as l_target then
+				fast_multiplication (l_second, l_target)
+			else
+				Precursor (a_second, a_target)
+			end
+		end
+
+
 feature -- Measurement
 
 	width: INTEGER
@@ -127,5 +140,78 @@ feature {AL_INTERNAL} -- Implementation
 
 	internal_column_labels: detachable AL_REAL_MATRIX_LABELS
 		-- Actual column labels
+
+	fast_multiplication (a_second, a_target: AL_DENSE_MATRIX)
+			-- Multiply `Current' by `a_second', storing the results in `a_target', using
+			-- internals of AL_DENSE_MATRIX.
+		local
+			l_block_end_i, l_block_end_j, l_block_end_k: INTEGER
+			l_i, l_j, l_k: INTEGER
+			l_sum: DOUBLE
+			l_width, l_height, l_depth: INTEGER
+			l_block_i, l_block_j, l_block_k: INTEGER
+			l_first, l_second, l_target: SPECIAL[DOUBLE]
+		do
+			l_first := data
+			l_second := a_second.data
+			l_target := a_target.data
+			l_width := a_target.width
+			l_height := a_target.height
+			l_depth := width
+			a_target.fill (0.0)
+
+			from
+				l_block_i := 0
+			until
+				l_block_i >= l_width
+			loop
+				l_block_end_i := l_width.min (l_block_i + block_size)
+				from
+					l_block_j := 0
+				until
+					l_block_j >= l_height
+				loop
+					l_block_end_j := l_height.min (l_block_j + block_size)
+					from
+						l_block_k := 0
+					until
+						l_block_k >= l_depth
+					loop
+						l_block_end_k := l_depth.min (l_block_k + block_size)
+						from
+							l_i := l_block_i
+						until
+							l_i >= l_block_end_i
+						loop
+							from
+								l_j := l_block_j
+							until
+								l_j >= l_block_end_j
+							loop
+								l_sum := l_target[l_i*l_height+l_j]
+								from
+									l_k := l_block_k
+								until
+									l_k >= l_block_end_k
+								loop
+									l_sum := l_sum + l_first[l_k*l_height+l_j] * l_second[l_i*l_depth+l_k]
+									l_k := l_k + 1
+								end
+								l_target[l_i*l_height+l_j] := l_sum
+								l_j := l_j + 1
+							end
+							l_i := l_i + 1
+						end
+
+						l_block_k := l_block_k + block_size
+					end
+					l_block_j := l_block_j + block_size
+				end
+				l_block_i := l_block_i + block_size
+			end
+		end
+
+
+
 
 end
