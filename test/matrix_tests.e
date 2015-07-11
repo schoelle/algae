@@ -582,6 +582,47 @@ feature -- Test routines
 			assert ("independent2", m.are_all_fields_independent)
 		end
 
+	test_swap_rows
+			-- Swapping rows
+		local
+			m: AL_MATRIX
+		do
+			m := new_matrix
+			m.set_default_labels
+			m.swap_rows (1, 3)
+			assert ("field_ok1", m[1, 1] = 4.0)
+			assert ("field_ok2", m.item (2, 1) = 3.0)
+			assert ("field_ok3", m[3, 1] = 2.0)
+			assert ("field_ok4", m.item (1, 2) = 3.5)
+			assert ("field_ok5", m[2, 2] = 2.5)
+			assert ("field_ok6", m.item (3, 2) = 1.5)
+			assert ("label1_ok", m.row_labels[1] ~ "row3")
+			assert ("label2_ok", m.row_labels[2] ~ "row2")
+			assert ("label3_ok", m.row_labels[3] ~ "row1")
+		end
+
+	test_swap_columns
+			-- Swapping columns
+		local
+			m: AL_MATRIX
+		do
+			m := new_matrix
+			m.set_default_labels
+			m.swap_columns (1, 2)
+			print (m.csv)
+			
+			assert ("field_ok1", m[1, 1] = 1.5)
+			assert ("field_ok2", m.item (2, 1) = 2.5)
+			assert ("field_ok3", m[3, 1] = 3.5)
+			assert ("field_ok4", m.item (1, 2) = 2.0)
+			assert ("field_ok5", m[2, 2] = 3.0)
+			assert ("field_ok6", m.item (3, 2) = 4.0)
+			assert ("label1_ok", m.column_labels[1] ~ "column2")
+			assert ("label2_ok", m.column_labels[2] ~ "column1")
+		end
+
+
+
 end
 
 

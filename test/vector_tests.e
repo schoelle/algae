@@ -263,6 +263,43 @@ feature -- Test routines
 			assert ("item_ok4", v [4] = 6.0)
 		end
 
+	test_add_scaled_vector
+			-- Test adding a scaled vector
+		local
+			v, w: AL_VECTOR
+		do
+			v := new_vector
+			w := al.vector (4)
+			w [1] := 2.0
+			w [2] := 3.0
+			w [3] := -1.0
+			w [4] := -2.0
+			v.add_scaled_vector (w, 3.0)
+			assert ("item_ok1", v [1] = 9.0)
+			assert ("item_ok2", v [2] = 18.0)
+			assert ("item_ok3", v [3] = -1.0)
+			assert ("item_ok4", v [4] = 2.0)
+		end
+
+	test_new_vector
+			-- Test creating a stand-alone vector
+		local
+			v: AL_VECTOR
+		do
+			v := al.vector (10)
+			v.fill (1.0)
+			assert ("fill_ok", v.sum = 10.0)
+		end
+
+	test_new_filled_vector
+			-- Test creating a stand-alone vector
+		local
+			v: AL_VECTOR
+		do
+			v := al.vector_filled (6, 2.0)
+			assert ("fill_ok", v.sum = 12.0)
+		end
+
 end
 
 

@@ -51,6 +51,25 @@ feature -- Matrices
 			create {AL_SYMMETRIC_MATRIX} Result.make (a_size, a_value)
 		end
 
+	vector (a_size: INTEGER): AL_VECTOR
+			-- A new vector of `a_size', represented by a vertical matrix of width 1, filled by 0.0
+		require
+			positive_size: a_size >= 0
+		do
+			Result := vector_filled (a_size, 0.0)
+		end
+
+	vector_filled (a_size: INTEGER; a_value: DOUBLE): AL_VECTOR
+			-- A new vector of `a_size', represented by a vertical matrix of width 1, filled by `a_value'
+		require
+			positive_size: a_size >= 0
+		local
+			l_matrix: AL_DENSE_MATRIX
+		do
+			create l_matrix.make (a_size, 1, a_value)
+			Result := l_matrix.column (1)
+		end
+
 	array_matrix (a_array: ARRAY [ARRAY [DOUBLE]]): AL_REAL_MATRIX
 			-- A new array matrix that sits on top of `a_array'
 			-- CAUTION:

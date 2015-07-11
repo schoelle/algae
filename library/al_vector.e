@@ -281,6 +281,23 @@ feature -- Operations
 			end
 		end
 
+	add_scaled_vector (a_vector: AL_VECTOR; a_scale: DOUBLE)
+			-- Add `a_value' times `a_scale' to all values.
+		require
+			same_size: a_vector.count = count
+		local
+			l_index: INTEGER
+		do
+			from
+				l_index := 1
+			until
+				l_index > count
+			loop
+				put (item (l_index) + a_vector.item (l_index) * a_scale, l_index)
+				l_index := l_index + 1
+			end
+		end
+
 	set_name (a_name: detachable STRING)
 			-- Set name to `a_name'.
 		deferred

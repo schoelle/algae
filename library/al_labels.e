@@ -197,6 +197,21 @@ feature -- Settors
 			end
 		end
 
+	swap (a_first_index, a_second_index: INTEGER)
+			-- Swap the labels at `a_first_index' and `a_second_index'.
+		require
+			first_valid: is_valid_index (a_first_index)
+			second_valid: is_valid_index (a_second_index)
+		local
+			l_tmp_first, l_tmp_second: detachable STRING
+		do
+			l_tmp_first := item (a_first_index)
+			l_tmp_second := item (a_second_index)
+			put (Void, a_first_index)
+			put (l_tmp_first, a_second_index)
+			put (l_tmp_second, a_first_index)
+		end
+
 feature -- Contract support
 
 	has_duplicates (a_labels: ARRAY[detachable STRING]): BOOLEAN
