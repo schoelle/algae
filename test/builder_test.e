@@ -24,7 +24,7 @@ feature -- Horizontal Builder
 			v: AL_VECTOR
 		do
 			m := al.matrix (2, 2)
-			m.column_by_column.set_all (<< -1, -2, -3, -4 >>)
+			m.column_by_column.set_all_array (<< -1, -2, -3, -4 >>)
 			v := m.row (1)
 			b := al.new_horizontal_builder
 			b.add_array (<< 1, 2 >>)
@@ -54,7 +54,7 @@ feature -- Horizontal Builder
 			v: AL_VECTOR
 		do
 			m := al.matrix (2, 2)
-			m.column_by_column.set_all (<< -1, -2, -3, -4 >>)
+			m.column_by_column.set_all_array (<< -1, -2, -3, -4 >>)
 			v := m.column (1)
 			b := al.new_vertical_builder
 			b.add_array (<< 1, 2 >>)

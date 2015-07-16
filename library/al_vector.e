@@ -190,7 +190,19 @@ feature -- Operations
 			value_set: item (a_index) = a_value
 		end
 
-	set_all (a_values: ARRAY[DOUBLE])
+	set_all (a_values: AL_VECTOR)
+			-- Set all values to match `a_values'.
+		require
+			same_length: a_values.count = count
+		do
+			across
+				Current as l_cursor
+			loop
+				l_cursor.put (a_values [l_cursor.index])
+			end
+		end
+
+	set_all_array (a_values: ARRAY[DOUBLE])
 			-- Set all values to match `a_values'.
 		require
 			same_length: a_values.count = count

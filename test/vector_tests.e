@@ -181,7 +181,7 @@ feature -- Test routines
 			v: AL_VECTOR
 		do
 			v := new_vector
-			v.set_all ( << 1.0, 2.0, 3.0, 4.0 >> )
+			v.set_all_array ( << 1.0, 2.0, 3.0, 4.0 >> )
 			assert ("item_ok1", v [1] = 1.0)
 			assert ("item_ok2", v [2] = 2.0)
 			assert ("item_ok3", v [3] = 3.0)
