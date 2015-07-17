@@ -14,6 +14,7 @@ class
 inherit
 	AL_INTERNAL
 	AL_ARRAY_MATRIX_SUPPORT
+	AL_MAP_SUPPORT
 
 feature -- Matrices
 
@@ -81,6 +82,28 @@ feature -- Matrices
 			valid_array: is_valid_array_matrix (a_array)
 		do
 			create {AL_ARRAY_MATRIX} Result.make (a_array)
+		end
+
+	linear_map (a_count, a_target_count, a_offset: INTEGER): AL_MAP
+			-- A new map of `a_count' elements where to target are between 1..a_target_count,
+			-- filled with a linear increasing list between `a_offset' and `a_offset' + `a_count' - 1
+		require
+			count_positive: a_count >= 0
+			target_positive: a_target_count >= 0
+			offset_positive: a_offset >= 0
+			count_and_offset_smaller_target: a_count + a_offset - 1 <= a_target_count
+		do
+			create {AL_MAP} Result.make (a_count, a_target_count, a_offset)
+		end
+
+	map_from_array (a_array: ARRAY [INTEGER]; a_target_count: INTEGER): AL_MAP
+			-- A new map of `a_count' elements where to target filled with values in `a_array', of where target
+			-- domain is of size `a_target_size'
+		require
+			target_positive: a_target_count >= 0
+			valid_array: is_valid_map (a_array, a_target_count)
+		do
+			create {AL_MAP} Result.make_from_array (a_array, a_target_count)
 		end
 
 feature -- Builders

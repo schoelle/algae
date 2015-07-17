@@ -14,7 +14,7 @@ create {AL_INTERNAL}
 
 feature {NONE} -- Initialization
 
-	make (a_matrix: AL_MATRIX; a_row_map, a_column_map: ARRAY[INTEGER])
+	make (a_matrix: AL_MATRIX; a_row_map, a_column_map: AL_MAP)
 			-- Create a partial matrix on top of `a_matrix', using columns `a_column_map' and rows `a_row_map'.
 		do
 			original_matrix := a_matrix
@@ -71,10 +71,10 @@ feature {AL_INTERNAL} -- Implementation
 	original_matrix: AL_MATRIX
 		-- Matrix that is transposed
 
-	row_map: ARRAY[INTEGER]
+	row_map: AL_MAP
 		-- Mapping of local rows to rows in `original_matrix'
 
-	column_map: ARRAY[INTEGER]
+	column_map: AL_MAP
 		-- Mapping of local columns to columns in `original_matrix'
 
 end

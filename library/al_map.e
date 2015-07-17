@@ -8,7 +8,7 @@ class
 	AL_MAP
 
 inherit
-	ANY
+	AL_MAP_SUPPORT
 		redefine
 			out
 		end
@@ -73,6 +73,14 @@ feature -- Access
 			valid_index: is_valid_index (a_index)
 		do
 			Result := mapping [a_index - 1]
+		end
+
+	index_of (a_target: INTEGER): INTEGER
+			-- Index of `a_target', or 0 if the target is not mapped
+		require
+			valid_target: is_valid_target (a_target)
+		do
+			Result := reverse_mapping [a_target - 1]
 		end
 
 feature -- Output
@@ -195,30 +203,6 @@ feature -- Contract support
 			-- Is `a_index' a valid index on the target?
 		do
 			Result := a_index >= 1 and a_index <= target_count
-		end
-
-	is_valid_map (a_map: ARRAY[INTEGER]; a_count: INTEGER): BOOLEAN
-			-- Is `a_map' a valid map, considering it maps into an index between 1 and `a_count' ?
-		require
-			positive_count: a_count > 0
-		local
-			l_reverse_map: ARRAY[BOOLEAN]
-			l_index, l_map_index: INTEGER
-		do
-			if a_count >= a_map.count and a_map.lower = 1 then
-				Result := True
-				create l_reverse_map.make_filled (True, 1, a_count)
-				from
-					l_index := 1
-				until
-					l_index > a_map.count or not Result
-				loop
-					l_map_index := a_map.item (l_index)
-					Result := l_reverse_map.item (l_map_index)
-					l_reverse_map.put (False, l_map_index)
-					l_index := l_index + 1
-				end
-			end
 		end
 
 feature {NONE} -- Implementation

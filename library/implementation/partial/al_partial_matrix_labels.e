@@ -15,14 +15,13 @@ create {AL_INTERNAL}
 
 feature {NONE} -- Initialization
 
-	make (a_labels: AL_LABELS; a_map: ARRAY[INTEGER])
+	make (a_labels: AL_LABELS; a_map: AL_MAP)
 			-- Initialize as subsets of `a_labels', defined by `a_map'.
 		require
-			valid_map: is_valid_map (a_map, a_labels.count)
+			valid_map: a_map.target_count = a_labels.count
 		do
 			original_labels := a_labels
 			map := a_map
-			reverse_map := new_reverse_map (a_map, a_labels.count)
 		end
 
 feature -- Access
@@ -54,7 +53,7 @@ feature -- Status report
 	has (a_label: STRING): BOOLEAN
 			-- <Precursor>
 		do
-			Result := original_labels.has (a_label) and then reverse_map.item (original_labels.index (a_label)) > 0
+			Result := original_labels.has (a_label) and then map.index_of (original_labels.index (a_label)) > 0
 		end
 
 feature -- Measurement
@@ -68,7 +67,7 @@ feature -- Measurement
 	index (a_label: STRING): INTEGER
 			-- <Precursor>
 		do
-			Result := reverse_map.item (original_labels.index (a_label))
+			Result := map.index_of (original_labels.index (a_label))
 		end
 
 feature -- Settors
@@ -84,10 +83,7 @@ feature {NONE} -- Implementation
 	original_labels: AL_LABELS
 		-- Labels we are a partial set of
 
-	map: ARRAY[INTEGER]
+	map: AL_MAP
 		-- Mapping of values to `labels'
-
-	reverse_map: ARRAY[INTEGER]
-		-- Reverse map, mapping labels of `original_labels' to labels in `Curret'
 
 end

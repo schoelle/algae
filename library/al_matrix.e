@@ -12,6 +12,7 @@ inherit
 		export
 			{NONE} all
 		end
+	ALGAE_USER
 
 feature -- Access
 
@@ -177,28 +178,12 @@ feature -- Access
 			min_max_row: a_min_row <= a_max_row
 			min_max_column: a_min_column <= a_max_column
 		local
-			l_row_map: ARRAY[INTEGER]
-			l_column_map: ARRAY[INTEGER]
+			l_row_map: AL_MAP
+			l_column_map: AL_MAP
 			l_index: INTEGER
 		do
-			create l_row_map.make_filled (0, 1, a_max_row - a_min_row + 1)
-			from
-				l_index := 1
-			until
-				l_index > l_row_map.count
-			loop
-				l_row_map.put (a_min_row + l_index - 1, l_index)
-				l_index := l_index + 1
-			end
-			create l_column_map.make_filled (0, 1, a_max_column - a_min_column + 1)
-			from
-				l_index := 1
-			until
-				l_index > l_column_map.count
-			loop
-				l_column_map.put (a_min_column + l_index - 1, l_index)
-				l_index := l_index + 1
-			end
+			l_row_map := al.linear_map (a_max_row - a_min_row + 1, height, a_min_row)
+			l_column_map := al.linear_map (a_max_column - a_min_column + 1, width, a_min_column)
 			create {AL_PARTIAL_MATRIX}Result.make (Current, l_row_map, l_column_map)
 		end
 
