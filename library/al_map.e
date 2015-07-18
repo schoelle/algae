@@ -236,12 +236,14 @@ feature {NONE} -- Implementation
 		local
 			l_first_target, l_second_target: INTEGER
 		do
-			l_first_target := mapping[a_first]
-			l_second_target := mapping[a_second]
-			mapping[a_first] := l_second_target
-			mapping[a_second] := l_first_target
-			reverse_mapping[l_first_target - 1] := a_second + 1
-			reverse_mapping[l_second_target - 1] := a_first + 1
+			if a_first /= a_second then
+				l_first_target := mapping[a_first]
+				l_second_target := mapping[a_second]
+				mapping[a_first] := l_second_target
+				mapping[a_second] := l_first_target
+				reverse_mapping[l_first_target - 1] := a_second + 1
+				reverse_mapping[l_second_target - 1] := a_first + 1
+			end
 		end
 
 end

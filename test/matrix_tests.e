@@ -436,6 +436,34 @@ feature -- Test routines
 			assert ("field_ok10", n[2, 2] = 3.5)
 		end
 
+	test_area_swap
+			-- Test accessing the area of a matrix, swapping elements
+		local
+			m, n: AL_MATRIX
+		do
+			m := new_matrix
+			n := m.area (2, 1, 3, 2)
+			n.swap_columns (2, 1)
+			m.row_labels [2] := "A"
+			n.column_labels [2] := "B"
+			m.put (11.00, 2, 2)
+			n.put (22.00, 2, 1)
+			assert ("width_ok", n.width = 2)
+			assert ("height_ok", n.height = 2)
+			assert ("label_ok1", n.row_labels [1] ~ "A")
+			assert ("label_ok2", m.column_labels [1] ~ "B")
+			assert ("field_ok1", m[1, 1] = 2.0)
+			assert ("field_ok2", m[2, 1] = 3.0)
+			assert ("field_ok3", m[3, 1] = 4.0)
+			assert ("field_ok4", m[1, 2] = 1.5)
+			assert ("field_ok5", m[2, 2] = 11.0)
+			assert ("field_ok6", m[3, 2] = 22.0)
+			assert ("field_ok7", n[1, 1] = 11.0)
+			assert ("field_ok8", n[2, 1] = 22.0)
+			assert ("field_ok9", n[1, 2] = 3.0)
+			assert ("field_ok10", n[2, 2] = 4.0)
+		end
+
 	test_valid_row_and_column
 			-- Test valid_row and valid_column
 		local
@@ -610,7 +638,7 @@ feature -- Test routines
 			m.set_default_labels
 			m.swap_columns (1, 2)
 			print (m.csv)
-			
+
 			assert ("field_ok1", m[1, 1] = 1.5)
 			assert ("field_ok2", m.item (2, 1) = 2.5)
 			assert ("field_ok3", m[3, 1] = 3.5)

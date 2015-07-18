@@ -186,56 +186,6 @@ feature -- Access
 			create {AL_PARTIAL_MATRIX}Result.make (Current, l_row_map, l_column_map)
 		end
 
-	swap_rows (a_first_row, a_second_row: INTEGER)
-			-- Exchange the values and labels of `a_first_row' and `a_second_row'.
-		require
-			valid_first_row: is_valid_row (a_first_row)
-			valid_second_row: is_valid_row (a_second_row)
-		local
-			l_tmp: DOUBLE
-			l_first_cursor: AL_VECTOR_CURSOR
-			l_second_cursor: AL_VECTOR_CURSOR
-		do
-			from
-				l_first_cursor := row (a_first_row).new_cursor
-				l_second_cursor := row (a_second_row).new_cursor
-			until
-				l_first_cursor.after
-			loop
-				l_tmp := l_first_cursor.item
-				l_first_cursor.put (l_second_cursor.item)
-				l_second_cursor.put (l_tmp)
-				l_first_cursor.forth
-				l_second_cursor.forth
-			end
-			row_labels.swap (a_first_row, a_second_row)
-		end
-
-	swap_columns (a_first_column, a_second_column: INTEGER)
-			-- Exchange the values and labels of `a_first_column' and `a_second_column'.
-		require
-			valid_first_column: is_valid_column (a_first_column)
-			valid_second_column: is_valid_column (a_second_column)
-		local
-			l_tmp: DOUBLE
-			l_first_cursor: AL_VECTOR_CURSOR
-			l_second_cursor: AL_VECTOR_CURSOR
-		do
-			from
-				l_first_cursor := column (a_first_column).new_cursor
-				l_second_cursor := column (a_second_column).new_cursor
-			until
-				l_first_cursor.after
-			loop
-				l_tmp := l_first_cursor.item
-				l_first_cursor.put (l_second_cursor.item)
-				l_second_cursor.put (l_tmp)
-				l_first_cursor.forth
-				l_second_cursor.forth
-			end
-			column_labels.swap (a_first_column, a_second_column)
-		end
-
 feature -- Measurement
 
 	width: INTEGER
@@ -556,6 +506,60 @@ feature -- Operations
 					l_row_index := l_row_index + 1
 				end
 				l_column_index := l_column_index + 1
+			end
+		end
+
+	swap_rows (a_first_row, a_second_row: INTEGER)
+			-- Exchange the values and labels of `a_first_row' and `a_second_row'.
+		require
+			valid_first_row: is_valid_row (a_first_row)
+			valid_second_row: is_valid_row (a_second_row)
+		local
+			l_tmp: DOUBLE
+			l_first_cursor: AL_VECTOR_CURSOR
+			l_second_cursor: AL_VECTOR_CURSOR
+		do
+			if a_first_row /= a_second_row then
+				from
+					l_first_cursor := row (a_first_row).new_cursor
+					l_second_cursor := row (a_second_row).new_cursor
+				until
+					l_first_cursor.after
+				loop
+					l_tmp := l_first_cursor.item
+					l_first_cursor.put (l_second_cursor.item)
+					l_second_cursor.put (l_tmp)
+					l_first_cursor.forth
+					l_second_cursor.forth
+				end
+				row_labels.swap (a_first_row, a_second_row)
+			end
+		end
+
+	swap_columns (a_first_column, a_second_column: INTEGER)
+			-- Exchange the values and labels of `a_first_column' and `a_second_column'.
+		require
+			valid_first_column: is_valid_column (a_first_column)
+			valid_second_column: is_valid_column (a_second_column)
+		local
+			l_tmp: DOUBLE
+			l_first_cursor: AL_VECTOR_CURSOR
+			l_second_cursor: AL_VECTOR_CURSOR
+		do
+			if a_first_column /= a_second_column then
+				from
+					l_first_cursor := column (a_first_column).new_cursor
+					l_second_cursor := column (a_second_column).new_cursor
+				until
+					l_first_cursor.after
+				loop
+					l_tmp := l_first_cursor.item
+					l_first_cursor.put (l_second_cursor.item)
+					l_second_cursor.put (l_tmp)
+					l_first_cursor.forth
+					l_second_cursor.forth
+				end
+				column_labels.swap (a_first_column, a_second_column)
 			end
 		end
 

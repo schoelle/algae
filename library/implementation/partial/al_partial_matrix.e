@@ -8,6 +8,10 @@ class
 
 inherit
 	AL_MATRIX
+		redefine
+			swap_columns,
+			swap_rows
+		end
 
 create {AL_INTERNAL}
 	make
@@ -64,6 +68,18 @@ feature -- Operations
 			-- <Precursor>
 		do
 			original_matrix.put (a_value, row_map.item (a_row), column_map.item (a_column))
+		end
+
+	swap_rows (a_first_row, a_second_row: INTEGER)
+			-- <Precursor>
+		do
+			row_map.swap (a_first_row, a_second_row)
+		end
+
+	swap_columns (a_first_column, a_second_column: INTEGER)
+			-- <Precursor>
+		do
+			column_map.swap (a_first_column, a_second_column)
 		end
 
 feature {AL_INTERNAL} -- Implementation
