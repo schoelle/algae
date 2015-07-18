@@ -180,7 +180,6 @@ feature -- Access
 		local
 			l_row_map: AL_MAP
 			l_column_map: AL_MAP
-			l_index: INTEGER
 		do
 			l_row_map := al.linear_map (a_max_row - a_min_row + 1, height, a_min_row)
 			l_column_map := al.linear_map (a_max_column - a_min_column + 1, width, a_min_column)
@@ -194,7 +193,6 @@ feature -- Access
 			valid_second_row: is_valid_row (a_second_row)
 		local
 			l_tmp: DOUBLE
-			l_label_tmp: detachable STRING
 			l_first_cursor: AL_VECTOR_CURSOR
 			l_second_cursor: AL_VECTOR_CURSOR
 		do
@@ -220,7 +218,6 @@ feature -- Access
 			valid_second_column: is_valid_column (a_second_column)
 		local
 			l_tmp: DOUBLE
-			l_label_tmp: detachable STRING
 			l_first_cursor: AL_VECTOR_CURSOR
 			l_second_cursor: AL_VECTOR_CURSOR
 		do
