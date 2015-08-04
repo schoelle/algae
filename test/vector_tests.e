@@ -201,6 +201,19 @@ feature -- Test routines
 			assert ("item_ok4", v [4] = 11.0)
 		end
 
+	test_fill_sequence
+			-- Test filling a vector with a sequence
+		local
+			v: AL_VECTOR
+		do
+			v := new_vector
+			v.fill_sequence (11.0, 0.5)
+			assert ("item_ok1", v [1] = 11.0)
+			assert ("item_ok2", v [2] = 11.5)
+			assert ("item_ok3", v [3] = 12.0)
+			assert ("item_ok4", v [4] = 12.5)
+		end
+
 	test_scale
 			-- Test scaling a vector
 		local
@@ -298,6 +311,28 @@ feature -- Test routines
 		do
 			v := al.vector_filled (6, 2.0)
 			assert ("fill_ok", v.sum = 12.0)
+		end
+
+	test_is_same
+			-- Test comparison
+		local
+			v, w: AL_VECTOR
+		do
+			v := new_vector
+			w := new_vector
+			assert ("same1", v.is_same (w))
+			w.set_name ("foo")
+			assert ("not_same1", not v.is_same (w))
+			v.set_name ("foo")
+			assert ("same2", v.is_same (w))
+			w.labels.put ("bla", 1)
+			assert ("not_same2", not v.is_same (w))
+			v.labels.put ("bla", 1)
+			assert ("same3", v.is_same (w))
+			v.put (33.0, 3)
+			assert ("not_same3", not v.is_same (w))
+			w.put (33.0, 3)
+			assert ("same4", v.is_same (w))
 		end
 
 end

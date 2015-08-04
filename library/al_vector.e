@@ -179,6 +179,32 @@ feature -- Status
 			definition: Result = (count = 0)
 		end
 
+	has_same_values (a_other: AL_VECTOR): BOOLEAN
+			-- Has `a_other' the same values as `Current'?
+		local
+			l_i: INTEGER
+		do
+			if count = a_other.count then
+				Result := True
+				from
+					l_i := 1
+				until
+					l_i > count or not Result
+				loop
+					Result := item(l_i) = a_other.item (l_i)
+					l_i := l_i + 1
+				end
+			end
+		end
+
+	is_same (a_other: AL_VECTOR): BOOLEAN
+			-- Is `a_other' the same vector as `Current'?
+		do
+			Result := has_same_values (a_other) and
+				(name ~ a_other.name) and
+				labels.is_same (a_other.labels)
+		end
+
 feature -- Operations
 
 	put (a_value: DOUBLE; a_index: INTEGER)
@@ -225,6 +251,24 @@ feature -- Operations
 				l_index > count
 			loop
 				put (a_value, l_index)
+				l_index := l_index + 1
+			end
+		end
+
+	fill_sequence (a_first, a_increment: DOUBLE)
+			-- Fill all elements of the vector, starting at `a_first' and incrementing by `a_increment'.
+		local
+			l_index: INTEGER
+			l_value: DOUBLE
+		do
+			from
+				l_index := 1
+				l_value := a_first
+			until
+				l_index > count
+			loop
+				put (l_value, l_index)
+				l_value := l_value + a_increment
 				l_index := l_index + 1
 			end
 		end
