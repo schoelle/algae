@@ -15,7 +15,8 @@ inherit
 			column,
 			diagonal,
 			column_by_column,
-			multiply_into
+			multiply_into,
+			transpose_into
 		end
 
 create {AL_INTERNAL}
@@ -84,6 +85,16 @@ feature -- Access
 			create {AL_DENSE_COLUMN_BY_COLUMN}Result.make (Current)
 		end
 
+feature -- Measurement
+
+	width: INTEGER
+		-- <Precursor>
+
+	height: INTEGER
+		-- <Precursor>
+
+feature -- INTO Operations
+
 	multiply_into (a_second, a_target: AL_MATRIX)
 			-- <Precursor>
 		do
@@ -95,22 +106,21 @@ feature -- Access
 			end
 		end
 
-
-feature -- Measurement
-
-	width: INTEGER
-		-- <Precursor>
-
-	height: INTEGER
-		-- <Precursor>
-
-feature -- INTO Operations
-
 	copy_values_into (a_target: AL_MATRIX)
-			-- Copy the current matrix into `a_target', only the values.
+			-- <Precursor>
 		do
 			if attached {AL_DENSE_MATRIX}a_target as l_dense_matrix then
 				l_dense_matrix.data.copy_data (data, 0, 0, height * width)
+			else
+				Precursor (a_target)
+			end
+		end
+
+	transpose_into (a_target: AL_MATRIX)
+			-- <Precursor>
+		do
+			if attached {AL_DENSE_MATRIX}a_target as l_dense_matrix then
+				fast_transpose (l_dense_matrix)
 			else
 				Precursor (a_target)
 			end
@@ -140,6 +150,53 @@ feature {AL_INTERNAL} -- Implementation
 
 	internal_column_labels: detachable AL_REAL_MATRIX_LABELS
 		-- Actual column labels
+
+	fast_transpose (a_target: AL_DENSE_MATRIX)
+			-- Fast transpose of `Current' into `a_target'.
+		local
+			l_block_end_i, l_block_end_j: INTEGER
+			l_i, l_j: INTEGER
+			l_width, l_height: INTEGER
+			l_block_i, l_block_j: INTEGER
+			l_source, l_target: SPECIAL[DOUBLE]
+		do
+			l_source := data
+			l_target := a_target.data
+			l_width := width
+			l_height := height
+
+			from
+				l_block_i := 0
+			until
+				l_block_i >= l_width
+			loop
+				l_block_end_i := l_width.min (l_block_i + block_size)
+				from
+					l_block_j := 0
+				until
+					l_block_j >= l_height
+				loop
+					l_block_end_j := l_height.min (l_block_j + block_size)
+					from
+						l_i := l_block_i
+					until
+						l_i >= l_block_end_i
+					loop
+						from
+							l_j := l_block_j
+						until
+							l_j >= l_block_end_j
+						loop
+							l_target[l_j*l_width+l_i] := l_source[l_i*l_height+l_j]
+							l_j := l_j + 1
+						end
+						l_i := l_i + 1
+					end
+					l_block_j := l_block_j + block_size
+				end
+				l_block_i := l_block_i + block_size
+			end
+		end
 
 	fast_multiplication (a_second, a_target: AL_DENSE_MATRIX)
 			-- Multiply `Current' by `a_second', storing the results in `a_target', using
@@ -210,8 +267,5 @@ feature {AL_INTERNAL} -- Implementation
 				l_block_i := l_block_i + block_size
 			end
 		end
-
-
-
 
 end

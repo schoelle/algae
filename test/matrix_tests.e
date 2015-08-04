@@ -380,6 +380,48 @@ feature -- Test routines
 			assert ("csv_ok", m.csv ~ ",,B%NA,2,1.5%N,3,2.5%N,4,3.5")
 		end
 
+	test_transposed
+			-- Test a transposed matrix
+		local
+			m, n: AL_MATRIX
+		do
+			m := new_matrix
+			m.row_labels [1] := "A"
+			m.column_labels [2] := "B"
+			m.put (11.00, 2, 2)
+			m.put (22.00, 3, 2)
+			n := m.transposed
+			assert ("width_ok", n.width = 3)
+			assert ("height_ok", n.height = 2)
+			assert ("label_ok1", n.column_labels [1] ~ "A")
+			assert ("label_ok2", n.row_labels [2] ~ "B")
+			assert ("field_ok7", n[1, 1] = 2.0)
+			assert ("field_ok8", n[1, 2] = 3.0)
+			assert ("field_ok9", n[1, 3] = 4.0)
+			assert ("field_ok10", n[2, 1] = 1.5)
+			assert ("field_ok11", n[2, 2] = 11.00)
+			assert ("field_ok12", n[2, 3] = 22.00)
+		end
+
+	test_transposed_large
+			-- Test for matrix multiplication on a larger matrix
+		local
+			m, n: AL_MATRIX
+			i: INTEGER
+		do
+			m := al.matrix (70, 30)
+			m.column_by_column.fill_sequence (1.0, 1.0)
+			n := m.transposed
+			from
+				i := 1
+			until
+				i > 70
+			loop
+				assert ("line_ok", n.column (i).is_same (m.row (i)))
+				i := i + 1
+			end
+		end
+
 	test_transposed_view
 			-- Test a transposed view
 		local
