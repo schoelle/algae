@@ -152,13 +152,29 @@ feature -- Test routines
 	test_statistics
 			-- Test the different statistics functions
 		local
+			m: AL_MATRIX
 			v: AL_VECTOR
 		do
 			v := new_vector
-			assert ("min_ok", v.min = 2.0)
-			assert ("max_ok", v.max = 9.0)
-			assert ("mean_ok", v.mean = 5.5)
-			assert ("sum_ok", v.sum = 22.0)
+			assert ("min_ok1", v.min = 2.0)
+			assert ("max_ok1", v.max = 9.0)
+			assert ("mean_ok1", v.mean = 5.5)
+			assert ("sum_ok1", v.sum = 22.0)
+			assert ("median_ok1", v.median = 5.5)
+			m := al.array_matrix (<< << 2.0, 9.0, 4.0, 5.0, 9.0, 1.0 >> >>)
+			v := m.row (1)
+			assert ("min_ok2", v.min = 1.0)
+			assert ("max_ok2", v.max = 9.0)
+			assert ("mean_ok2", v.mean = 5.0)
+			assert ("sum_ok2", v.sum = 30.0)
+			assert ("median_ok2", v.median = 4.5)
+			m := al.array_matrix (<< << 7.0 >> >>)
+			v := m.row (1)
+			assert ("min_ok3", v.min = 7.0)
+			assert ("max_ok3", v.max = 7.0)
+			assert ("mean_ok3", v.mean = 7.0)
+			assert ("sum_ok3", v.sum = 7.0)
+			assert ("median_ok3", v.median = 7.0)
 		end
 
 	test_times
