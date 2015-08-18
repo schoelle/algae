@@ -1,12 +1,15 @@
 note
 	description: "[
-		A matrix that uses an ARRAY[ARRAY[DOUBLE]] (outer array is holds lines)
+		A matrix that uses an ARRAY[ARRAY[DOUBLE]] (outer array holds lines of rows, inner arrays hold row values)
 		
 		CAUTION:
 		While there is a precondition on the constructor that all inner arrays are of
 		the same length, the implementation will not constantly check that this is
 		still the case. The implementation is completely undefined if you manipulate
 		the size and structure of the underlying array.
+		
+		Also, please be aware that this is a highly inefficient way to storing data. Try to transform the array
+		into a proper, dense matrix as fast as possible.
 	]"
 	author: "Bernd Schoeller"
 	license: "Eiffel Forum License, Version 2"
