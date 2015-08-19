@@ -16,7 +16,8 @@ inherit
 			diagonal,
 			column_by_column,
 			multiply_into,
-			transpose_into
+			transpose_into,
+			as_dense
 		end
 
 create {AL_INTERNAL}
@@ -92,6 +93,16 @@ feature -- Measurement
 
 	height: INTEGER
 		-- <Precursor>
+
+feature -- Conversion
+
+	as_dense: AL_REAL_MATRIX
+			-- <Precusor>
+		do
+			Result := Current
+		ensure then
+			definition: Result = Current
+		end
 
 feature -- INTO Operations
 

@@ -36,7 +36,7 @@ feature -- Benchmark
 			across
 				benchmark("symmetric", "aat", 1) as x
 			loop
-				n := m.aat.real
+				n := m.aat.as_real
 			end
 		end
 
@@ -49,7 +49,7 @@ feature -- Benchmark
 			across
 				benchmark("symmetric", "ata", 1) as x
 			loop
-				n := m.ata.real
+				n := m.ata.as_real
 			end
 		end
 
@@ -104,7 +104,7 @@ feature -- Benchmark
 			across
 				benchmark ("symmetric","duplicated", 10) as x
 			loop
-				o := m.duplicated
+				o := m.to_real
 			end
 		end
 

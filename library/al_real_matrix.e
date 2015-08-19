@@ -9,7 +9,7 @@ deferred class
 inherit
 	AL_MATRIX
 		redefine
-			real,
+			as_real,
 			are_all_fields_independent
 		end
 
@@ -23,10 +23,14 @@ feature -- Access
 			definition: Result = Current
 		end
 
-	real: AL_REAL_MATRIX
+feature -- Conversion
+
+	as_real: AL_REAL_MATRIX
 			-- <Precursor>
 		do
 			Result := Current
+		ensure then
+			definition: Result = Current
 		end
 
 feature -- Status report

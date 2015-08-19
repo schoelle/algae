@@ -94,24 +94,6 @@ feature -- Access
 		deferred
 		end
 
-	real: AL_REAL_MATRIX
-			-- This matrix, as a real matrix, copying if necessary
-		do
-			Result := duplicated
-		end
-
-	duplicated: AL_REAL_MATRIX
-			-- Copy of `Current' as a real matrix, always copying the data
-		do
-			create {AL_DENSE_MATRIX}Result.make (height, width, 0.0)
-			copy_values_into (Result)
-			row_labels.copy_into (Result.row_labels)
-			column_labels.copy_into (Result.column_labels)
-		ensure
-			same_matrix: is_same (Result)
-			different_underlying: Result.underlying_matrix /= underlying_matrix
-		end
-
 	times (a_other: AL_MATRIX): AL_MATRIX
 			-- Multiply `Current' by `a_other'
 		require
@@ -233,7 +215,7 @@ feature -- Status
 		local
 			l_row, l_column: INTEGER
 		do
-			Result := is_square
+			Result := is_square and row_labels.is_same (column_labels)
 			from
 				l_column := 1
 			until
@@ -338,6 +320,81 @@ feature -- Status
 			-- Are all fields indenpendent, so that changing one won't change the other?
 		do
 			Result := underlying_matrix.are_all_fields_independent
+		end
+
+feature -- Conversion
+
+	as_real: AL_REAL_MATRIX
+			-- This matrix, as a real matrix, copying if necessary
+			-- The exact implementation (dense, symmetric, etc) will be up to the implementor.
+		do
+			Result := to_real
+		end
+
+	to_real: AL_REAL_MATRIX
+			-- Copy of `Current' as a real matrix, always copying the data
+			-- The exact implementation (dense, symmetric, etc) will be up to the implementor.
+		do
+			Result := to_dense
+		ensure
+			same_matrix: is_same (Result)
+			different_underlying: Result.underlying_matrix /= underlying_matrix
+		end
+
+	as_dense: AL_REAL_MATRIX
+			-- Current matrix as a dense matrix, copy if necessary
+		do
+			Result := to_dense
+		end
+
+	to_dense: AL_REAL_MATRIX
+			-- Copy of `Current' as a dense matrix, always copying the data
+		do
+			create {AL_DENSE_MATRIX}Result.make (height, width, 0.0)
+			copy_values_into (Result)
+			row_labels.copy_into (Result.row_labels)
+			column_labels.copy_into (Result.column_labels)
+		ensure
+			same_matrix: is_same (Result)
+			different_underlying: Result.underlying_matrix /= underlying_matrix
+		end
+
+	as_symmetric: AL_REAL_MATRIX
+			-- Current matrix as a dense matrix, copy if necessary
+		require
+			symmetric: is_symmetric
+		do
+			Result := to_symmetric
+		end
+
+	to_symmetric: AL_REAL_MATRIX
+			-- Copy of `Current' as a symmetric matrix, always copying the data
+		require
+			symmetric: is_symmetric
+		local
+			l_row, l_column, l_size: INTEGER
+		do
+			l_size := height
+			create {AL_SYMMETRIC_MATRIX}Result.make (l_size, 0.0)
+			from
+				l_row := 1
+			until
+				l_row > l_size
+			loop
+				from
+					l_column := 1
+				until
+					l_column > l_row
+				loop
+					Result[l_row, l_column] := item (l_row, l_column)
+					l_column := l_column + 1
+				end
+				l_row := l_row + 1
+			end
+			row_labels.copy_into (Result.row_labels)
+		ensure
+			same_matrix: is_same (Result)
+			different_underlying: Result.underlying_matrix /= underlying_matrix
 		end
 
 feature -- Copy Operations

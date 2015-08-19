@@ -10,7 +10,7 @@ inherit
 	AL_MATRIX
 		redefine
 			transposed,
-			real
+			as_real
 		end
 
 create
@@ -56,10 +56,10 @@ feature -- Access
 			Result := original_matrix
 		end
 
-	real: AL_REAL_MATRIX
+	as_real: AL_REAL_MATRIX
 			-- <Precursor>
 		do
-			Result := original_matrix.transposed.real
+			Result := original_matrix.transposed.as_real
 		end
 
 feature -- Measurement
