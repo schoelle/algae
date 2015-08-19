@@ -17,6 +17,17 @@ inherit
 	AL_MAP_SUPPORT
 	AL_DOUBLE_HANDLER
 
+create {ALGAE_USER}
+	make
+
+feature -- Initialisation
+
+	make
+			-- Initialise the factory
+		do
+			initialize_double_handling
+		end
+
 feature -- Matrices
 
 	matrix (a_height, a_width: INTEGER): AL_REAL_MATRIX
