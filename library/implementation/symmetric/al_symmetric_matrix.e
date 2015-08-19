@@ -28,6 +28,7 @@ feature {NONE} -- Initialization
 		require
 			positive_size: a_size >= 0
 		do
+			initialize_double_handling
 			height := a_size
 			width := a_size
 			internal_count := (a_size * (a_size + 1)) // 2

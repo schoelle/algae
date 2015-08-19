@@ -31,6 +31,7 @@ feature {NONE} -- Initialization
 			positive_height: height >= 0
 			positive_width: width >= 0
 		do
+			initialize_double_handling
 			height := a_height
 			width := a_width
 			create data.make_filled (a_value, a_width * a_height)
@@ -66,24 +67,28 @@ feature -- Access
 			-- <Precursor>
 		do
 			create {AL_DENSE_MATRIX_ROW}Result.make (Current, a_index)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	column (a_index: INTEGER): AL_VECTOR
 			-- <Precursor>
 		do
 			create {AL_DENSE_MATRIX_COLUMN}Result.make (Current, a_index)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	diagonal: AL_VECTOR
 			-- <Precursor>
 		do
 			create {AL_DENSE_DIAGONAL}Result.make (Current)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	column_by_column: AL_VECTOR
 			-- <Precursor>
 		do
 			create {AL_DENSE_COLUMN_BY_COLUMN}Result.make (Current)
+			Result.initialize_double_handling_from (Current)
 		end
 
 feature -- Measurement

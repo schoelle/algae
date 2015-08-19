@@ -19,6 +19,7 @@ feature {NONE} -- Initialization
 		require
 			must_be_square: a_matrix.is_square
 		do
+			initialize_double_handling
 			matrix := a_matrix
 			create {AL_REAL_MATRIX_LABELS} labels.make (count, matrix)
 		end

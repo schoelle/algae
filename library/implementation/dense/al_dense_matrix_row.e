@@ -17,6 +17,7 @@ feature {NONE} -- Initialization
 	make (a_dense_matrix: AL_DENSE_MATRIX; a_row: INTEGER)
 			-- Make a row vector on `a_dense_matrix', on row `a_row'.
 		do
+			initialize_double_handling
 			row_index := a_row
 			dense_matrix := a_dense_matrix
 		end

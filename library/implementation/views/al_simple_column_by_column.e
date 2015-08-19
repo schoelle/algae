@@ -17,6 +17,7 @@ feature {NONE} -- Initialization
 	make (a_matrix: AL_MATRIX)
 			-- All values of `a_matrix', column by column.
 		do
+			initialize_double_handling
 			matrix := a_matrix
 			create {AL_REAL_MATRIX_LABELS} labels.make (count, matrix)
 		end

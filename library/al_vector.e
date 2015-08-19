@@ -9,6 +9,7 @@ deferred class
 inherit
 	AL_INTERNAL
 	ITERABLE [DOUBLE]
+	AL_DOUBLE_HANDLER
 
 feature -- Access
 
@@ -209,7 +210,7 @@ feature -- Status
 				until
 					l_i > count or not Result
 				loop
-					Result := item(l_i) = a_other.item (l_i)
+					Result := same_double (item(l_i), a_other.item (l_i))
 					l_i := l_i + 1
 				end
 			end
@@ -231,7 +232,7 @@ feature -- Operations
 			valid_index: is_valid_index (a_index)
 		deferred
 		ensure
-			value_set: item (a_index) = a_value
+			value_set: same_double (item (a_index), a_value)
 		end
 
 	set_all (a_values: AL_VECTOR)
@@ -425,7 +426,6 @@ feature {NONE} -- Implementation
 				a_data[a_start] := a_data[a_start + 1]
 				a_data[a_start + 1] := l_tmp
 			end
-
 		end
 
 end

@@ -13,6 +13,7 @@ inherit
 			{NONE} all
 		end
 	ALGAE_USER
+	AL_DOUBLE_HANDLER
 
 feature -- Access
 
@@ -49,6 +50,7 @@ feature -- Access
 			valid_row: is_valid_row (a_index)
 		do
 			create {AL_SIMPLE_MATRIX_ROW} Result.make (Current, a_index)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	row_labeled (a_label: STRING): AL_VECTOR
@@ -65,6 +67,7 @@ feature -- Access
 			valid_column: is_valid_column (a_index)
 		do
 			create {AL_SIMPLE_MATRIX_COLUMN} Result.make (Current, a_index)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	column_labeled (a_label: STRING): AL_VECTOR
@@ -81,12 +84,14 @@ feature -- Access
 			must_be_square: is_square
 		do
 			create {AL_SIMPLE_DIAGONAL} Result.make (Current)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	column_by_column: AL_VECTOR
 			-- All values of `Current', column by column
 		do
 			create {AL_SIMPLE_COLUMN_BY_COLUMN} Result.make (Current)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	underlying_matrix: AL_REAL_MATRIX
@@ -100,6 +105,7 @@ feature -- Access
 			can_multiply: width = a_other.height
 		do
 			create {AL_DENSE_MATRIX}Result.make (height, a_other.width, 0.0)
+			Result.initialize_double_handling_from (Current)
 			multiply_into (a_other, Result)
 			row_labels.copy_into (Result.row_labels)
 			a_other.column_labels.copy_into (Result.column_labels)
@@ -117,6 +123,7 @@ feature -- Access
 			-- Multiply `Current' by its own transpose, not in-place
 		do
 			create {AL_DENSE_MATRIX} Result.make (width, width, 0.0)
+			Result.initialize_double_handling_from (Current)
 			ata_into (Result)
 			column_labels.copy_into (Result.row_labels)
 			column_labels.copy_into (Result.column_labels)
@@ -137,6 +144,7 @@ feature -- Access
 			-- Transposed view on `Current'
 		do
 			create {AL_TRANSPOSED_MATRIX}Result.make (Current)
+			Result.initialize_double_handling_from (Current)
 		ensure
 			same_underlying: Result.underlying_matrix = underlying_matrix
 		end
@@ -145,6 +153,7 @@ feature -- Access
 			-- Transposed version of `Current'
 		do
 			create {AL_DENSE_MATRIX}Result.make (width, height, 0.0)
+			Result.initialize_double_handling_from (Current)
 			transpose_into (Result)
 			row_labels.copy_into (Result.column_labels)
 			column_labels.copy_into (Result.row_labels)
@@ -166,6 +175,7 @@ feature -- Access
 			l_row_map := al.linear_map (a_max_row - a_min_row + 1, height, a_min_row)
 			l_column_map := al.linear_map (a_max_column - a_min_column + 1, width, a_min_column)
 			create {AL_PARTIAL_MATRIX}Result.make (Current, l_row_map, l_column_map)
+			Result.initialize_double_handling_from (Current)
 		end
 
 feature -- Measurement
@@ -226,7 +236,7 @@ feature -- Status
 				until
 					l_row > height or not Result
 				loop
-					Result := item (l_column, l_row) = item (l_row, l_column)
+					Result := same_double (item (l_column, l_row), item (l_row, l_column))
 					l_row := l_row + 1
 				end
 				l_column := l_column + 1
@@ -249,7 +259,7 @@ feature -- Status
 				until
 					l_row >= l_column or not Result
 				loop
-					Result := item (l_row, l_column) = 0
+					Result := same_double (item (l_row, l_column), 0.0)
 					l_row := l_row + 1
 				end
 				l_column := l_column + 1
@@ -272,7 +282,7 @@ feature -- Status
 				until
 					l_row > height or not Result
 				loop
-					Result := item (l_row, l_column) = 0
+					Result := same_double (item (l_row, l_column), 0)
 					l_row := l_row + 1
 				end
 				l_column := l_column + 1
@@ -306,7 +316,7 @@ feature -- Status
 				until
 					l_row_index > height or not Result
 				loop
-					Result := item (l_row_index, l_col_index) = a_other.item (l_row_index, l_col_index)
+					Result := same_double (item (l_row_index, l_col_index), a_other.item (l_row_index, l_col_index))
 					l_row_index := l_row_index + 1
 				end
 				l_col_index := l_col_index + 1
@@ -351,6 +361,7 @@ feature -- Conversion
 			-- Copy of `Current' as a dense matrix, always copying the data
 		do
 			create {AL_DENSE_MATRIX}Result.make (height, width, 0.0)
+			Result.initialize_double_handling_from (Current)
 			copy_values_into (Result)
 			row_labels.copy_into (Result.row_labels)
 			column_labels.copy_into (Result.column_labels)
@@ -376,6 +387,7 @@ feature -- Conversion
 		do
 			l_size := height
 			create {AL_SYMMETRIC_MATRIX}Result.make (l_size, 0.0)
+			Result.initialize_double_handling_from (Current)
 			from
 				l_row := 1
 			until
@@ -541,7 +553,7 @@ feature -- Operations
 			valid_column: is_valid_column (a_column)
 		deferred
 		ensure
-			value_set: item (a_row, a_column) = a_value
+			value_set: same_double (item (a_row, a_column), a_value)
 		end
 
 	fill (a_value: DOUBLE)

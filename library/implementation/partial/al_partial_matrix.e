@@ -21,6 +21,7 @@ feature {NONE} -- Initialization
 	make (a_matrix: AL_MATRIX; a_row_map, a_column_map: AL_MAP)
 			-- Create a partial matrix on top of `a_matrix', using columns `a_column_map' and rows `a_row_map'.
 		do
+			initialize_double_handling_from (a_matrix)
 			original_matrix := a_matrix
 			column_map := a_column_map
 			row_map := a_row_map

@@ -15,6 +15,7 @@ inherit
 	AL_INTERNAL
 	AL_ARRAY_MATRIX_SUPPORT
 	AL_MAP_SUPPORT
+	AL_DOUBLE_HANDLER
 
 feature -- Matrices
 
@@ -25,6 +26,7 @@ feature -- Matrices
 			positive_width: a_width >= 0
 		do
 			create {AL_DENSE_MATRIX} Result.make (a_height, a_width, 0.0)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	matrix_filled (a_height, a_width: INTEGER; a_value: DOUBLE): AL_REAL_MATRIX
@@ -34,6 +36,7 @@ feature -- Matrices
 			positive_width: a_width >= 0
 		do
 			create {AL_DENSE_MATRIX} Result.make (a_height, a_width, a_value)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	symmetric_matrix (a_size: INTEGER): AL_REAL_MATRIX
@@ -42,6 +45,7 @@ feature -- Matrices
 			positive_size: a_size >= 0
 		do
 			create {AL_SYMMETRIC_MATRIX} Result.make (a_size, 0.0)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	symmetric_matrix_filled (a_size: INTEGER; a_value: DOUBLE): AL_REAL_MATRIX
@@ -50,6 +54,7 @@ feature -- Matrices
 			positive_size: a_size >= 0
 		do
 			create {AL_SYMMETRIC_MATRIX} Result.make (a_size, a_value)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	vector (a_size: INTEGER): AL_VECTOR
@@ -68,6 +73,7 @@ feature -- Matrices
 			l_matrix: AL_DENSE_MATRIX
 		do
 			create l_matrix.make (a_size, 1, a_value)
+			l_matrix.initialize_double_handling_from (Current)
 			Result := l_matrix.column (1)
 		end
 
@@ -82,6 +88,7 @@ feature -- Matrices
 			valid_array: is_valid_array_matrix (a_array)
 		do
 			create {AL_ARRAY_MATRIX} Result.make (a_array)
+			Result.initialize_double_handling_from (Current)
 		end
 
 	linear_map (a_count, a_target_count, a_offset: INTEGER): AL_MAP

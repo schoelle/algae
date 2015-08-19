@@ -31,6 +31,7 @@ feature {NONE} -- Initialization
 		require
 			valid_array: is_valid_array_matrix (a_data)
 		do
+			initialize_double_handling
 			height := a_data.count
 			if height >= 1 then
 				width := a_data.item (1).count

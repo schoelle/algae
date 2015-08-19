@@ -21,6 +21,7 @@ feature {NONE} -- Intialization
 	make (a_matrix: AL_MATRIX)
 			-- Matrix to transpose
 		do
+			initialize_double_handling
 			original_matrix := a_matrix
 		end
 

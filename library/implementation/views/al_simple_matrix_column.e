@@ -17,6 +17,7 @@ feature {NONE} -- Initialization
 	make (a_matrix: AL_MATRIX; a_column: INTEGER)
 			-- Column `a_column' of `a_matrix'.
 		do
+			initialize_double_handling
 			matrix := a_matrix
 			column_index := a_column
 		end
