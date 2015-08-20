@@ -713,7 +713,7 @@ feature -- Test routines
 			assert ("echolon5", m.is_row_echolon)
 		end
 
-	test_is_row_echolong
+	test_is_row_echolon
 			-- Some extra `is_row_echolon' tests
 		local
 			m: AL_MATRIX
