@@ -332,6 +332,57 @@ feature -- Status
 			Result := underlying_matrix.are_all_fields_independent
 		end
 
+	is_unit: BOOLEAN
+			-- Is the matrix a unit matrix (square and only the diagonal is 1.0, everything else 0.0) ?
+		local
+			l_cursor: AL_VECTOR_CURSOR
+		do
+			from
+				Result := is_square
+				l_cursor := column_by_column.new_cursor
+			until
+				not Result or l_cursor.after
+			loop
+				if l_cursor.row = l_cursor.column then
+					Result := same_double (l_cursor.item, 1.0)
+				else
+					Result := same_double (l_cursor.item, 0.0)
+				end
+				l_cursor.forth
+			end
+		end
+
+	is_row_echolon: BOOLEAN
+			-- Is the matrix in strict (i.e. first value is 1.0) row echolon form ?
+		local
+			l_row_index, l_column_index: INTEGER
+			l_row: AL_VECTOR
+			l_last_indent: INTEGER
+		do
+			Result := True
+			l_last_indent := 0
+			from
+				l_row_index := 1
+			until
+				not Result or l_row_index > height
+			loop
+				l_row := row (l_row_index)
+				from
+					l_column_index := 1
+				until
+					l_column_index > width or else not same_double (l_row.item (l_column_index), 0.0)
+				loop
+					l_column_index := l_column_index + 1
+				end
+				Result := l_column_index > width or else
+					(same_double (l_row.item (l_column_index), 1.0) and l_column_index > l_last_indent)
+				if Result then
+					l_last_indent := l_column_index
+				end
+				l_row_index := l_row_index + 1
+			end
+		end
+
 feature -- Conversion
 
 	as_real: AL_REAL_MATRIX

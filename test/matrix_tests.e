@@ -691,6 +691,44 @@ feature -- Test routines
 			assert ("label2_ok", m.column_labels[2] ~ "column1")
 		end
 
+	test_is_unit
+			-- Test `is_unit' status
+		local
+			m: AL_MATRIX
+		do
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 1.0 >> >>)
+			assert ("unit1", m.is_unit)
+			assert ("echolon1", m.is_row_echolon)
+			m := al.unit (7)
+			assert ("unit2", m.is_unit)
+			assert ("echolon2", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 0.0 >> >>)
+			assert ("unit3", not m.is_unit)
+			assert ("echolon3", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 1.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 1.0 >> >>)
+			assert ("unit4", not m.is_unit)
+			assert ("echolon4", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 0.0, 1.0 >>, << 0.0, 0.0, 0.0 >> >>)
+			assert ("unit5", not m.is_unit)
+			assert ("echolon5", m.is_row_echolon)
+		end
+
+	test_is_row_echolong
+			-- Some extra `is_row_echolon' tests
+		local
+			m: AL_MATRIX
+		do
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 1.0 >>, << 0.0, 0.0, 0.0 >>  >>)
+			assert ("echolon1", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 0.0 >>, << 0.0, 0.0, 1.0 >>  >>)
+			assert ("echolon2", not m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 2.0, 3.0 >>, << 0.0, 1.0, 2.0 >>, << 0.0, 0.0, 1.0 >>  >>)
+			assert ("echolon3", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 2.0, 3.0 >>, << 0.0, 2.0, 2.0 >>, << 0.0, 0.0, 1.0 >>  >>)
+			assert ("echolon4", not m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0, 0.0 >>, << 0.0, 1.0, 2.0, 1.0 >>, << 0.0, 0.0, 0.0, 1.0 >>  >>)
+			assert ("echolon5", m.is_row_echolon)
+		end
 
 
 end

@@ -102,6 +102,16 @@ feature -- Matrices
 			Result.initialize_double_handling_from (Current)
 		end
 
+	unit (a_size: INTEGER): AL_REAL_MATRIX
+			-- A unit matrix of size `a_size'.
+		do
+			create {AL_DENSE_MATRIX} Result.make (a_size, a_size, 0.0)
+			Result.initialize_double_handling_from (Current)
+			Result.diagonal.fill (1.0)
+		ensure
+			is_unit: Result.is_unit
+		end
+
 	linear_map (a_count, a_target_count, a_offset: INTEGER): AL_MAP
 			-- A new map of `a_count' elements where to target are between 1..a_target_count,
 			-- filled with a linear increasing list between `a_offset' and `a_offset' + `a_count' - 1
