@@ -373,6 +373,21 @@ feature -- Operations
 			end
 		end
 
+	round_all
+			-- Round all values according to `epsilon'.
+		local
+			l_index: INTEGER
+		do
+			from
+				l_index := 1
+			until
+				l_index > count
+			loop
+				put (round_double (item (l_index)), l_index)
+				l_index := l_index + 1
+			end
+		end
+
 	set_name (a_name: detachable STRING)
 			-- Set name to `a_name'.
 		deferred

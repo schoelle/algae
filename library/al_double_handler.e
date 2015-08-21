@@ -12,7 +12,7 @@ feature -- Initialisation
 			-- Initialises double handling.
 		do
 			-- This value is good for float points between -10.0 and 10.0
-			epsilon := 0.000000000000001
+			epsilon := 0.0000000000000001
 		end
 
 	initialize_double_handling_from (a_handler: AL_DOUBLE_HANDLER)
@@ -56,6 +56,18 @@ feature -- Comparison
 			else
 				Result := (a_second - a_first) < epsilon
 			end
+		end
+
+feature -- Adjustments
+
+	round_double (a_double: DOUBLE): DOUBLE
+			-- Rounded `a_double' according to precision
+		local
+			l_value: DOUBLE
+		do
+			l_value := a_double / epsilon
+			l_value := l_value.rounded_real_64
+			Result := l_value * epsilon
 		end
 
 end

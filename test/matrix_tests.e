@@ -725,7 +725,7 @@ feature -- Test routines
 			m := al.array_matrix (<< << 1.0, 2.0, 3.0 >>, << 0.0, 1.0, 2.0 >>, << 0.0, 0.0, 1.0 >>  >>)
 			assert ("echolon3", m.is_row_echolon)
 			m := al.array_matrix (<< << 1.0, 2.0, 3.0 >>, << 0.0, 2.0, 2.0 >>, << 0.0, 0.0, 1.0 >>  >>)
-			assert ("echolon4", not m.is_row_echolon)
+			assert ("echolon4", m.is_row_echolon)
 			m := al.array_matrix (<< << 1.0, 0.0, 0.0, 0.0 >>, << 0.0, 1.0, 2.0, 1.0 >>, << 0.0, 0.0, 0.0, 1.0 >>  >>)
 			assert ("echolon5", m.is_row_echolon)
 		end

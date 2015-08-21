@@ -353,7 +353,7 @@ feature -- Status
 		end
 
 	is_row_echolon: BOOLEAN
-			-- Is the matrix in strict (i.e. first value is 1.0) row echolon form ?
+			-- Is the matrix in row echolon form ?
 		local
 			l_row_index, l_column_index: INTEGER
 			l_row: AL_VECTOR
@@ -374,8 +374,7 @@ feature -- Status
 				loop
 					l_column_index := l_column_index + 1
 				end
-				Result := l_column_index > width or else
-					(same_double (l_row.item (l_column_index), 1.0) and l_column_index > l_last_indent)
+				Result := l_column_index > width or l_column_index > l_last_indent
 				if Result then
 					l_last_indent := l_column_index
 				end
