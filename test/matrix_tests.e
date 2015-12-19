@@ -380,6 +380,18 @@ feature -- Test routines
 			assert ("csv_ok", m.csv ~ ",,B%NA,2,1.5%N,3,2.5%N,4,3.5")
 		end
 
+	test_markdown
+			-- Test export to markdown
+		local
+			m: AL_MATRIX
+		do
+			m := new_matrix
+			m.row_labels [1] := "A"
+			m.column_labels [2] := "B"
+			print (m.markdown)
+			assert ("markdown_ok", m.markdown ~ "AAA")
+		end
+
 	test_transposed
 			-- Test a transposed matrix
 		local

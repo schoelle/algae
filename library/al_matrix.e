@@ -151,6 +151,15 @@ feature -- Access
 			Result := a_printer.matrix_as_csv (Current)
 		end
 
+	markdown: STRING
+			-- CSV representation of `Current'
+		local
+			a_printer: AL_MARKDOWN_SUPPORT
+		do
+			create a_printer
+			Result := a_printer.matrix_as_markdown (Current)
+		end
+
 	transposed_view: AL_MATRIX
 			-- Transposed view on `Current'
 		do
