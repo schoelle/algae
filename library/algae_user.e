@@ -11,7 +11,7 @@ feature -- Access
 	al: AL_FACTORY
 			-- Access to the ALGEA factory class
 		once
-			create Result
+			create Result.make
 		end
 
 end

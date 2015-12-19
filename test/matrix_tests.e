@@ -247,7 +247,7 @@ feature -- Test routines
 		do
 			m := new_matrix
 			n := m.transposed_view
-			o := n.real
+			o := n.as_real
 			assert ("original_real", m.underlying_matrix = m)
 			assert ("view_not_real", n.underlying_matrix /= n)
 			assert ("view_made_reall", o.underlying_matrix = o)
@@ -259,7 +259,7 @@ feature -- Test routines
 			m, n: AL_MATRIX
 		do
 			m := new_matrix
-			n := m.duplicated
+			n := m.to_real
 			m.put (11.00, 2, 2)
 			m.row_labels [1] := "First"
 			n.put (22.00, 1, 1)
@@ -703,6 +703,44 @@ feature -- Test routines
 			assert ("label2_ok", m.column_labels[2] ~ "column1")
 		end
 
+	test_is_unit
+			-- Test `is_unit' status
+		local
+			m: AL_MATRIX
+		do
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 1.0 >> >>)
+			assert ("unit1", m.is_unit)
+			assert ("echolon1", m.is_row_echolon)
+			m := al.unit (7)
+			assert ("unit2", m.is_unit)
+			assert ("echolon2", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 0.0 >> >>)
+			assert ("unit3", not m.is_unit)
+			assert ("echolon3", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 1.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 1.0 >> >>)
+			assert ("unit4", not m.is_unit)
+			assert ("echolon4", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 0.0, 1.0 >>, << 0.0, 0.0, 0.0 >> >>)
+			assert ("unit5", not m.is_unit)
+			assert ("echolon5", m.is_row_echolon)
+		end
+
+	test_is_row_echolon
+			-- Some extra `is_row_echolon' tests
+		local
+			m: AL_MATRIX
+		do
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 1.0 >>, << 0.0, 0.0, 0.0 >>  >>)
+			assert ("echolon1", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 0.0 >>, << 0.0, 0.0, 1.0 >>  >>)
+			assert ("echolon2", not m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 2.0, 3.0 >>, << 0.0, 1.0, 2.0 >>, << 0.0, 0.0, 1.0 >>  >>)
+			assert ("echolon3", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 2.0, 3.0 >>, << 0.0, 2.0, 2.0 >>, << 0.0, 0.0, 1.0 >>  >>)
+			assert ("echolon4", m.is_row_echolon)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0, 0.0 >>, << 0.0, 1.0, 2.0, 1.0 >>, << 0.0, 0.0, 0.0, 1.0 >>  >>)
+			assert ("echolon5", m.is_row_echolon)
+		end
 
 
 end

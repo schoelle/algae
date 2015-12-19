@@ -10,7 +10,7 @@ inherit
 	AL_MATRIX
 		redefine
 			transposed,
-			real
+			as_real
 		end
 
 create
@@ -21,6 +21,7 @@ feature {NONE} -- Intialization
 	make (a_matrix: AL_MATRIX)
 			-- Matrix to transpose
 		do
+			initialize_double_handling
 			original_matrix := a_matrix
 		end
 
@@ -56,10 +57,10 @@ feature -- Access
 			Result := original_matrix
 		end
 
-	real: AL_REAL_MATRIX
+	as_real: AL_REAL_MATRIX
 			-- <Precursor>
 		do
-			Result := original_matrix.transposed.real
+			Result := original_matrix.transposed.as_real
 		end
 
 feature -- Measurement

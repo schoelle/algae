@@ -215,7 +215,7 @@ feature -- Test routines
 		do
 			m := new_symmetric_matrix
 			n := m.transposed_view
-			o := n.real
+			o := n.as_real
 			assert ("original_real", m.underlying_matrix = m)
 			assert ("view_made_real", o.underlying_matrix = o)
 		end
@@ -226,7 +226,7 @@ feature -- Test routines
 			m, n: AL_MATRIX
 		do
 			m := new_symmetric_matrix
-			n := m.duplicated
+			n := m.to_real
 			m.put (11.00, 2, 2)
 			m.row_labels [1] := "First"
 			n.put (22.00, 1, 1)

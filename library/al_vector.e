@@ -9,6 +9,7 @@ deferred class
 inherit
 	AL_INTERNAL
 	ITERABLE [DOUBLE]
+	AL_DOUBLE_HANDLER
 
 feature -- Access
 
@@ -86,6 +87,24 @@ feature -- Statistics
 			not_empty: not is_empty
 		do
 			Result := sum / count
+		end
+
+	median: DOUBLE
+			-- Median value of all values (mean of two median values on even count)
+		require
+			not_empty: not is_empty
+		local
+			l_mid: INTEGER
+			l_values: ARRAY[DOUBLE]
+		do
+			l_values := to_array
+			quick_sort (l_values.area, 0, count)
+			l_mid := count // 2
+			if count \\ 2 = 0 then
+				Result := (l_values.item (l_mid) + l_values.item (l_mid + 1)) / 2
+			else
+				Result := l_values.item (l_mid + 1)
+			end
 		end
 
 	sum: DOUBLE
@@ -191,7 +210,7 @@ feature -- Status
 				until
 					l_i > count or not Result
 				loop
-					Result := item(l_i) = a_other.item (l_i)
+					Result := same_double (item(l_i), a_other.item (l_i))
 					l_i := l_i + 1
 				end
 			end
@@ -213,7 +232,7 @@ feature -- Operations
 			valid_index: is_valid_index (a_index)
 		deferred
 		ensure
-			value_set: item (a_index) = a_value
+			value_set: same_double (item (a_index), a_value)
 		end
 
 	set_all (a_values: AL_VECTOR)
@@ -354,11 +373,74 @@ feature -- Operations
 			end
 		end
 
+	round_all
+			-- Round all values according to `epsilon'.
+		local
+			l_index: INTEGER
+		do
+			from
+				l_index := 1
+			until
+				l_index > count
+			loop
+				put (round_double (item (l_index)), l_index)
+				l_index := l_index + 1
+			end
+		end
+
 	set_name (a_name: detachable STRING)
 			-- Set name to `a_name'.
 		deferred
 		ensure
 			name_set: name ~ a_name
+		end
+
+feature {NONE} -- Implementation
+
+	quick_sort (a_data: SPECIAL[DOUBLE]; a_start, a_count: INTEGER)
+			-- Sort `a_data' region starting at index `a_start' (from 0) and `a_count' elements long.
+		require
+			valid_start: a_start >= 0 and a_start < a_data.count
+			valid_count: a_count > 0 and (a_start + a_count) <= a_data.count
+		local
+			l_pivot, l_tmp: DOUBLE
+			i, j: INTEGER
+		do
+			if a_count > 2 then
+				l_pivot := a_data[a_start]
+				from
+					i := a_start + 1
+					j := a_start + a_count - 1
+				until
+					i >= j
+				loop
+					from
+					until
+						a_data[j] < l_pivot or i >= j
+					loop
+						j := j - 1
+					end
+					from
+					until
+						a_data[i] > l_pivot or i >= j
+					loop
+						i := i + 1
+					end
+					if i < j then
+						l_tmp := a_data[i]
+						a_data[i] := a_data[j]
+						a_data[j] := l_tmp
+					end
+				end
+				a_data[a_start] := a_data[i]
+				a_data[i] := l_pivot
+				quick_sort (a_data, a_start, i - a_start)
+				quick_sort (a_data, i + 1, a_count + a_start - i - 1)
+			elseif a_count = 2 and a_data[a_start] > a_data[a_start + 1] then
+				l_tmp := a_data[a_start]
+				a_data[a_start] := a_data[a_start + 1]
+				a_data[a_start + 1] := l_tmp
+			end
 		end
 
 end

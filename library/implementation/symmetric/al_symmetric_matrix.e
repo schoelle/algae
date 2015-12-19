@@ -13,7 +13,9 @@ inherit
 			transposed,
 			transposed_view,
 			set_default_labels,
-			are_all_fields_independent
+			are_all_fields_independent,
+			as_symmetric,
+			to_symmetric
 		end
 
 create {AL_INTERNAL}
@@ -26,6 +28,7 @@ feature {NONE} -- Initialization
 		require
 			positive_size: a_size >= 0
 		do
+			initialize_double_handling
 			height := a_size
 			width := a_size
 			internal_count := (a_size * (a_size + 1)) // 2
@@ -84,6 +87,27 @@ feature -- Measurement
 
 	height: INTEGER
 		-- <Precursor>
+
+feature -- Conversion
+
+	as_symmetric: AL_REAL_MATRIX
+			-- <Precursor>
+		do
+			Result := Current
+		ensure then
+			definition: Result = Current
+		end
+
+	to_symmetric: AL_REAL_MATRIX
+			-- <Precursor>
+		local
+			l_result: AL_SYMMETRIC_MATRIX
+		do
+			create l_result.make (height, 0.0)
+			l_result.data.copy_data (data, 0, 0, internal_count)
+			row_labels.copy_into (l_result.row_labels)
+			Result := l_result
+		end
 
 feature -- Operations
 

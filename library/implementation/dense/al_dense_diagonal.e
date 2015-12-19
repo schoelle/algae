@@ -18,6 +18,7 @@ feature {NONE} -- Initialization
 	make (a_dense_matrix: AL_DENSE_MATRIX)
 			-- Make a column by column vector on `a_dense_matrix'
 		do
+			initialize_double_handling
 			increment := a_dense_matrix.height + 1
 			dense_matrix := a_dense_matrix
 			data := a_dense_matrix.data

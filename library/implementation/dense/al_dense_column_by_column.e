@@ -18,6 +18,7 @@ feature {NONE} -- Initialization
 	make (a_dense_matrix: AL_DENSE_MATRIX)
 			-- Make a column by column vector on `a_dense_matrix'
 		do
+			initialize_double_handling
 			dense_matrix := a_dense_matrix
 			data := a_dense_matrix.data
 			create {AL_REAL_MATRIX_LABELS} labels.make (count, dense_matrix)
