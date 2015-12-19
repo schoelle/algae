@@ -62,7 +62,7 @@ feature -- Access
 	to_array: ARRAY[DOUBLE]
 			-- Values of the vector as an array of doubles
 		do
-			create Result.make (1, count)
+			create Result.make_filled (0.0, 1, count)
 			across
 				Current as l_cursor
 			loop

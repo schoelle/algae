@@ -389,7 +389,7 @@ feature -- Test routines
 			m.row_labels [1] := "A"
 			m.column_labels [2] := "B"
 			print (m.markdown)
-			assert ("markdown_ok", m.markdown ~ "AAA")
+			assert ("markdown_ok", m.markdown ~ "|   |   | B   |%N|---|---|-----|%N| A | 2 | 1.5 |%N|   | 3 | 2.5 |%N|   | 4 | 3.5 |%N")
 		end
 
 	test_transposed
