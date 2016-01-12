@@ -146,6 +146,69 @@ feature -- Test routines
 			assert ("label_ok", v.name ~ "row1")
 		end
 
+	test_rows
+			-- Test access to rows using an iterator
+		local
+			m: AL_MATRIX
+			v: AL_VECTOR
+			c: AL_MATRIX_ROWS_CURSOR
+		do
+			m := new_matrix
+			m.set_default_labels
+			c := m.rows.new_cursor
+			assert ("index1_ok", c.index = 1)
+			assert ("count1_ok", c.item.count = 2)
+			assert ("value1_ok1", c.item.item (1) = 2.0)
+			assert ("value1_ok2", c.item.item (2) = 1.5)
+			assert ("after1_ok", not c.after)
+			assert ("label1_ok", c.item.name ~ "row1")
+			c.forth
+			assert ("index2_ok", c.index = 2)
+			assert ("count2_ok", c.item.count = 2)
+			assert ("value2_ok1", c.item.item (1) = 3.0)
+			assert ("value2_ok2", c.item.item (2) = 2.5)
+			assert ("after2_ok", not c.after)
+			assert ("label2_ok", c.item.name ~ "row2")
+			c.forth
+			assert ("index3_ok", c.index = 3)
+			assert ("count3_ok", c.item.count = 2)
+			assert ("value3_ok1", c.item.item (1) = 4.0)
+			assert ("value3_ok2", c.item.item (2) = 3.5)
+			assert ("after3_ok", not c.after)
+			assert ("label3_ok", c.item.name ~ "row3")
+			c.forth
+			assert ("after4_ok", c.after)
+		end
+
+	test_columns
+			-- Test access to columns using an iterator
+		local
+			m: AL_MATRIX
+			v: AL_VECTOR
+			c: AL_MATRIX_COLUMNS_CURSOR
+		do
+			m := new_matrix
+			m.set_default_labels
+			c := m.columns.new_cursor
+			assert ("index1_ok", c.index = 1)
+			assert ("count1_ok", c.item.count = 3)
+			assert ("value1_ok1", c.item.item (1) = 2.0)
+			assert ("value1_ok2", c.item.item (2) = 3.0)
+			assert ("value1_ok3", c.item.item (3) = 4.0)
+			assert ("after1_ok", not c.after)
+			assert ("label1_ok", c.item.name ~ "column1")
+			c.forth
+			assert ("index2_ok", c.index = 2)
+			assert ("count2_ok", c.item.count = 3)
+			assert ("value2_ok1", c.item.item (1) = 1.5)
+			assert ("value2_ok2", c.item.item (2) = 2.5)
+			assert ("value2_ok3", c.item.item (3) = 3.5)
+			assert ("after2_ok", not c.after)
+			assert ("label2_ok", c.item.name ~ "column2")
+			c.forth
+			assert ("after3_ok", c.after)
+		end
+
 	test_column
 			-- Test access to a column
 		local

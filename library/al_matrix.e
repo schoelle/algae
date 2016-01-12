@@ -53,6 +53,12 @@ feature -- Access
 			Result.initialize_double_handling_from (Current)
 		end
 
+	rows: AL_MATRIX_ROWS
+			-- All rows as a sequence
+		do
+			create {AL_MATRIX_ROWS} Result.make (Current)
+		end
+
 	row_labeled (a_label: STRING): AL_VECTOR
 			-- Row labeled `a_label'
 		require
@@ -68,6 +74,12 @@ feature -- Access
 		do
 			create {AL_SIMPLE_MATRIX_COLUMN} Result.make (Current, a_index)
 			Result.initialize_double_handling_from (Current)
+		end
+
+	columns: AL_MATRIX_COLUMNS
+			-- All columns as a sequence
+		do
+			create {AL_MATRIX_COLUMNS} Result.make (Current)
 		end
 
 	column_labeled (a_label: STRING): AL_VECTOR
