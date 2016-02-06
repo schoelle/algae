@@ -1,0 +1,15 @@
+package algae
+
+project
+	algae_safe = "base-safe.ecf"
+
+note
+	title: Algae Library
+	description: "Algae: a library for linear algebra in Eiffel"
+
+	tags: algebra,math
+	license: Eiffel Forum License v2 
+	copyright: 2016 Bernd Schoeller
+	link[license]: http://www.eiffel.com/licensing/forum.txt external
+
+end
