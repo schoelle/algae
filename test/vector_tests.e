@@ -177,6 +177,23 @@ feature -- Test routines
 			assert ("median_ok3", v.median = 7.0)
 		end
 
+	test_mode
+			-- Test the mode function
+		local
+			m: AL_MATRIX
+			v: AL_VECTOR
+		do
+			m := al.array_matrix (<< << 2.0, 9.0, 2.0, 5.0, 9.0, 1.0 >> >>)
+			v := m.row (1)
+			assert ("mode_ok1", v.mode = 2.0)
+			m := al.array_matrix (<< << 3.0 >> >>)
+			v := m.row (1)
+			assert ("mode_ok2", v.mode = 3.0)
+			m := al.array_matrix (<< << 9.0, 9.0, 8.0, 8.0, 9.0, 8.0, 9.0 >> >>)
+			v := m.row (1)
+			assert ("mode_ok3", v.mode = 9.0)
+		end
+
 	test_times
 			-- Test the different statistics functions
 		local

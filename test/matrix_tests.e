@@ -150,7 +150,6 @@ feature -- Test routines
 			-- Test access to rows using an iterator
 		local
 			m: AL_MATRIX
-			v: AL_VECTOR
 			c: AL_MATRIX_ROWS_CURSOR
 		do
 			m := new_matrix
@@ -184,7 +183,6 @@ feature -- Test routines
 			-- Test access to columns using an iterator
 		local
 			m: AL_MATRIX
-			v: AL_VECTOR
 			c: AL_MATRIX_COLUMNS_CURSOR
 		do
 			m := new_matrix

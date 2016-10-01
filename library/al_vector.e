@@ -107,6 +107,44 @@ feature -- Statistics
 			end
 		end
 
+	mode: DOUBLE
+			-- Mode of all values (mean of two median values on even count)
+			-- If the vector is multi-modal, then the smallest value is returned.
+		require
+			not_empty: not is_empty
+		local
+			l_values: ARRAY[DOUBLE]
+			l_value: DOUBLE
+			l_best_count: INTEGER
+			l_current_value: DOUBLE
+			l_current_count: INTEGER
+			l_index: INTEGER
+		do
+			l_values := to_array
+			quick_sort (l_values.area, 0, count)
+			from
+				Result := l_values[1]
+				l_current_value := Result
+				l_best_count := 1
+				l_index := 2
+			until
+				l_index > count
+			loop
+				l_value := l_values[l_index]
+				if same_double (l_current_value, l_value) then
+					l_current_count := l_current_count + 1
+					if l_current_count > l_best_count then
+						Result := l_current_value
+						l_best_count := l_current_count
+					end
+				else
+					l_current_value := l_value
+					l_current_count := 1
+				end
+				l_index := l_index + 1
+			end
+		end
+
 	sum: DOUBLE
 			-- Sum of all values
 		local
@@ -400,13 +438,13 @@ feature {NONE} -- Implementation
 	quick_sort (a_data: SPECIAL[DOUBLE]; a_start, a_count: INTEGER)
 			-- Sort `a_data' region starting at index `a_start' (from 0) and `a_count' elements long.
 		require
-			valid_start: a_start >= 0 and a_start < a_data.count
-			valid_count: a_count > 0 and (a_start + a_count) <= a_data.count
+			valid_start: a_count > 0 implies (a_start >= 0 and a_start < a_data.count)
+			valid_count: a_count >= 0 and (a_start + a_count) <= a_data.count
 		local
 			l_pivot, l_tmp: DOUBLE
 			i, j: INTEGER
 		do
-			if a_count > 2 then
+			if a_count > 1 then
 				l_pivot := a_data[a_start]
 				from
 					i := a_start + 1
@@ -432,14 +470,12 @@ feature {NONE} -- Implementation
 						a_data[j] := l_tmp
 					end
 				end
-				a_data[a_start] := a_data[i]
-				a_data[i] := l_pivot
+				if l_pivot > a_data[j] then
+					a_data[a_start] := a_data[j]
+					a_data[j] := l_pivot
+				end
 				quick_sort (a_data, a_start, i - a_start)
-				quick_sort (a_data, i + 1, a_count + a_start - i - 1)
-			elseif a_count = 2 and a_data[a_start] > a_data[a_start + 1] then
-				l_tmp := a_data[a_start]
-				a_data[a_start] := a_data[a_start + 1]
-				a_data[a_start + 1] := l_tmp
+				quick_sort (a_data, j + 1, a_count + a_start - j - 1)
 			end
 		end
 
