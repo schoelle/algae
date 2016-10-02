@@ -786,6 +786,29 @@ feature -- Test routines
 			assert ("echolon5", m.is_row_echolon)
 		end
 
+	test_is_pivot
+			-- Test `is_pivot' status
+		local
+			m: AL_MATRIX
+		do
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 1.0 >> >>)
+			assert ("pivot1", m.is_pivot)
+			m := al.array_matrix (<< << 0.0, 0.0, 1.0 >>, << 0.0, 1.0, 0.0 >>, << 1.0, 0.0, 0.0 >> >>)
+			assert ("pivot2", m.is_pivot)
+			m := al.array_matrix (<< << 0.0, 1.0, 0.0 >>, << 1.0, 0.0, 0.0 >>, << 0.0, 0.0, 1.0 >> >>)
+			assert ("pivot3", m.is_pivot)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 0.0, 0.0, 1.0 >>, << 0.0, 1.0, 0.0 >> >>)
+			assert ("pivot4", m.is_pivot)
+			m := al.array_matrix (<< << 1.0, 0.0, 0.0 >>, << 1.0, 0.0, 0.0 >>, << 0.0, 0.0, 1.0 >> >>)
+			assert ("pivot5", not m.is_pivot)
+			m := al.array_matrix (<< << 0.0, 1.0, 1.0 >>, << 0.0, 1.0, 0.0 >>, << 1.0, 0.0, 0.0 >> >>)
+			assert ("pivot6", not m.is_pivot)
+			m := al.array_matrix (<< << 0.0, 1.0, 0.0 >>, << 0.0, 0.0, 0.0 >>, << 0.0, 0.0, 1.0 >> >>)
+			assert ("pivot7", not m.is_pivot)
+			m := al.array_matrix (<< << 2.0, 0.0, 0.0 >>, << 0.0, 0.0, 0.0 >>, << 0.0, 1.0, 0.0 >> >>)
+			assert ("pivot8", not m.is_pivot)
+		end
+
 	test_is_row_echolon
 			-- Some extra `is_row_echolon' tests
 		local

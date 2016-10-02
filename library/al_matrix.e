@@ -371,6 +371,50 @@ feature -- Status
 				end
 				l_cursor.forth
 			end
+		ensure
+			unit_must_be_square: Result implies is_square
+		end
+
+	is_pivot: BOOLEAN
+			-- Is the matrix a pivot matrix, that is with all values 0.0, exept for exactly one 1.0
+			-- value on each row and column?
+		local
+			l_col_index, l_row_index: INTEGER
+			l_value: DOUBLE
+			l_col_array, l_row_array: ARRAY[BOOLEAN]
+			l_count: INTEGER
+		do
+			create l_col_array.make_filled (False, 1, width)
+			create l_row_array.make_filled (False, 1, height)
+			from
+				Result := True
+				l_col_index := 1
+				l_count := 0
+			until
+				not Result or l_col_index > width
+			loop
+				from
+					Result := True
+					l_row_index := 1
+				until
+					not Result or l_row_index > width
+				loop
+					l_value := item (l_row_index, l_col_index)
+					if same_double (l_value, 1.0) then
+						Result := not (l_col_array[l_col_index] or l_row_array[l_row_index])
+						l_col_array[l_col_index] := True
+						l_row_array[l_row_index] := True
+						l_count := l_count + 1
+					else
+						Result := same_double (l_value, 0.0)
+					end
+					l_row_index := l_row_index + 1
+				end
+				l_col_index := l_col_index + 1
+			end
+			Result := Result and l_count = width
+		ensure
+			pivot_must_be_square: Result implies is_square
 		end
 
 	is_row_echolon: BOOLEAN
@@ -439,6 +483,18 @@ feature -- Conversion
 		ensure
 			same_matrix: is_same (Result)
 			different_underlying: Result.underlying_matrix /= underlying_matrix
+		end
+
+	as_partial: AL_MATRIX
+			-- As partial matrix, containing the full matrix
+		do
+			Result := to_partial
+		end
+
+	to_partial: AL_MATRIX
+			-- As an independent partial matrix, containing the full matrix
+		do
+			Result := area (1, 1, height, width)
 		end
 
 	as_symmetric: AL_REAL_MATRIX
