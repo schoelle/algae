@@ -355,21 +355,19 @@ feature -- Status
 
 	is_unit: BOOLEAN
 			-- Is the matrix a unit matrix (square and only the diagonal is 1.0, everything else 0.0) ?
-		local
-			l_cursor: AL_VECTOR_CURSOR
 		do
+			across
+				column_by_column as l_cursor
 			from
 				Result := is_square
-				l_cursor := column_by_column.new_cursor
 			until
-				not Result or l_cursor.after
+				not Result
 			loop
 				if l_cursor.row = l_cursor.column then
 					Result := same_double (l_cursor.item, 1.0)
 				else
 					Result := same_double (l_cursor.item, 0.0)
 				end
-				l_cursor.forth
 			end
 		ensure
 			unit_must_be_square: Result implies is_square
@@ -379,38 +377,27 @@ feature -- Status
 			-- Is the matrix a pivot matrix, that is with all values 0.0, exept for exactly one 1.0
 			-- value on each row and column?
 		local
-			l_col_index, l_row_index: INTEGER
-			l_value: DOUBLE
 			l_col_array, l_row_array: ARRAY[BOOLEAN]
 			l_count: INTEGER
 		do
 			create l_col_array.make_filled (False, 1, width)
 			create l_row_array.make_filled (False, 1, height)
+			across
+				column_by_column as l_cursor
 			from
 				Result := True
-				l_col_index := 1
 				l_count := 0
 			until
-				not Result or l_col_index > width
+				not Result
 			loop
-				from
-					Result := True
-					l_row_index := 1
-				until
-					not Result or l_row_index > width
-				loop
-					l_value := item (l_row_index, l_col_index)
-					if same_double (l_value, 1.0) then
-						Result := not (l_col_array[l_col_index] or l_row_array[l_row_index])
-						l_col_array[l_col_index] := True
-						l_row_array[l_row_index] := True
-						l_count := l_count + 1
-					else
-						Result := same_double (l_value, 0.0)
-					end
-					l_row_index := l_row_index + 1
+				if same_double (l_cursor.item, 1.0) then
+					Result := not (l_col_array[l_cursor.column] or l_row_array[l_cursor.row])
+					l_col_array[l_cursor.column] := True
+					l_row_array[l_cursor.row] := True
+					l_count := l_count + 1
+				else
+					Result := same_double (l_cursor.item, 0.0)
 				end
-				l_col_index := l_col_index + 1
 			end
 			Result := Result and l_count = width
 		ensure
