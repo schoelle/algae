@@ -447,7 +447,7 @@ feature {NONE} -- Implementation
 			if a_count > 1 then
 				l_pivot := a_data[a_start]
 				from
-					i := a_start + 1
+					i := a_start
 					j := a_start + a_count - 1
 				until
 					i >= j
@@ -470,12 +470,8 @@ feature {NONE} -- Implementation
 						a_data[j] := l_tmp
 					end
 				end
-				if l_pivot > a_data[j] then
-					a_data[a_start] := a_data[j]
-					a_data[j] := l_pivot
-				end
 				quick_sort (a_data, a_start, i - a_start)
-				quick_sort (a_data, j + 1, a_count + a_start - j - 1)
+				quick_sort (a_data, i, a_count + a_start - i)
 			end
 		end
 
