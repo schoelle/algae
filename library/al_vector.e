@@ -180,6 +180,31 @@ feature -- Statistics
 			end
 		end
 
+	max_index: INTEGER
+			-- Index of maximum
+		require
+			not_empty: not is_empty
+		local
+			l_max: DOUBLE
+			l_index: INTEGER
+		do
+			from
+				l_max := item (1)
+				Result := 1
+				l_index := 2
+			until
+				l_index > count
+			loop
+				if item (l_index) > l_max then
+					l_max := item (l_index)
+					Result := l_index
+				end
+				l_index := l_index + 1
+			end
+		ensure
+			max_found: same_double (max, item(Result))
+		end
+
 	min: DOUBLE
 			-- Minimum of all values
 		require
@@ -198,6 +223,31 @@ feature -- Statistics
 				end
 				l_index := l_index + 1
 			end
+		end
+
+	min_index: INTEGER
+			-- Index of minimum
+		require
+			not_empty: not is_empty
+		local
+			l_min: DOUBLE
+			l_index: INTEGER
+		do
+			from
+				l_min := item (1)
+				Result := 1
+				l_index := 2
+			until
+				l_index > count
+			loop
+				if item (l_index) < l_min then
+					l_min := item (l_index)
+					Result := l_index
+				end
+				l_index := l_index + 1
+			end
+		ensure
+			min_found: same_double (min, item(Result))
 		end
 
 	times (a_other: AL_VECTOR): DOUBLE
@@ -447,7 +497,7 @@ feature {NONE} -- Implementation
 			if a_count > 1 then
 				l_pivot := a_data[a_start]
 				from
-					i := a_start
+					i := a_start + 1
 					j := a_start + a_count - 1
 				until
 					i >= j
@@ -470,8 +520,12 @@ feature {NONE} -- Implementation
 						a_data[j] := l_tmp
 					end
 				end
+				if l_pivot > a_data[j] then
+					a_data[a_start] := a_data[j]
+					a_data[j] := l_pivot
+				end
 				quick_sort (a_data, a_start, i - a_start)
-				quick_sort (a_data, i, a_count + a_start - i)
+				quick_sort (a_data, j + 1, a_count + a_start - j - 1)
 			end
 		end
 
