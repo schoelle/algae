@@ -3,7 +3,6 @@ note
 	author: "Bernd Schoeller"
 	license: "Eiffel Forum License, Version 2"
 
-
 class
 	AL_MAP
 
@@ -43,6 +42,9 @@ feature {NONE} -- Initialization
 				reverse_mapping.put (l_index + 1, l_index + a_offset - 1)
 				l_index := l_index + 1
 			end
+		ensure
+			correct_length: count = a_count
+			correct_target_length: target_count = a_target_count
 		end
 
 	make_from_array (a_array: ARRAY[INTEGER]; a_target_count: INTEGER)
@@ -57,6 +59,9 @@ feature {NONE} -- Initialization
 			create reverse_mapping.make_filled (0, a_target_count)
 			mapping.copy_data (a_array.area, 0, 0, count)
 			recompute_reverse
+		ensure
+			correct_length: count = a_array.count
+			correct_target_length: target_count = a_target_count
 		end
 
 feature -- Access
@@ -142,6 +147,9 @@ feature -- Operations
 			second_ok: is_valid_index (a_second)
 		do
 			internal_swap (a_first - 1, a_second - 1)
+		ensure
+			old_first_is_second: item (a_second) = old item (a_first)
+			old_second_is_first: item (a_first) = old item (a_second)
 		end
 
 	reverse
@@ -179,6 +187,9 @@ feature -- Operations
 				mapping [a_index - 1] := a_target
 				reverse_mapping [a_target - 1] := a_index
 			end
+		ensure
+			value_set: item (a_index) = a_target
+			reverse_set: index_of (a_target) = a_index
 		end
 
 	set_to_array (a_array: ARRAY [INTEGER])
@@ -189,7 +200,6 @@ feature -- Operations
 			mapping.copy_data (a_array.area, 0, 0, count)
 			recompute_reverse
 		end
-
 
 feature -- Contract support
 

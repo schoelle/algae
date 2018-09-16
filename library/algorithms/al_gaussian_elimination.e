@@ -21,6 +21,9 @@ feature -- Initialisation
 			initialize_double_handling_from (a_matrix)
 			input := a_matrix
 			output := al.unit (a_matrix.height)
+		ensure
+			input_set: input = a_matrix
+			output_created: output.is_unit and output.height = input.height
 		end
 
 feature -- Access
@@ -32,17 +35,6 @@ feature -- Access
 		-- Output matrix
 
 feature -- Settings
-
-	set_input (a_matrix: AL_MATRIX)
-			-- Set input to `a_matrix' and output to same-height diagonal.
-		do
-			initialize_double_handling_from (a_matrix)
-			input := a_matrix
-			output := al.unit (a_matrix.height)
-		ensure
-			input_set: input = a_matrix
-			output_created: output.is_unit and output.height = input.height
-		end
 
 	set_output (a_matrix: AL_MATRIX)
 			-- Set output to `a_matrix'.

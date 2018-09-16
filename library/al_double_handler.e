@@ -50,6 +50,8 @@ feature -- Comparison
 
 	same_double (a_first, a_second: DOUBLE): BOOLEAN
 			-- Are `a_first' and `a_second' considered equivalent?
+		require
+			initialized: is_double_handling_initialised
 		do
 			if a_first > a_second then
 				Result := (a_first - a_second) < epsilon
@@ -62,6 +64,8 @@ feature -- Adjustments
 
 	round_double (a_double: DOUBLE): DOUBLE
 			-- Rounded `a_double' according to precision
+		require
+			initialized: is_double_handling_initialised
 		local
 			l_value: DOUBLE
 		do

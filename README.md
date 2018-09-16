@@ -340,12 +340,12 @@ local
 	l_in, l_out: AL_MATRIX
 	l_algo: AL_GAUSSIAN_ELIMINATION
 do
-	l_in := al.array_matrix (<< << 2.0, 4.0, 3.0 >>, 
-	                            << 1.0, 1.0, 5.0 >>, 
-								<< 8.0, 0.0, 1.0 >> >>)
-	l_out := al.array_matrix (<< << 10.0 >>, 
-	                             << 13.0 >>, 
-								 << 34.0 >> >>)
+	l_in := al.array_matrix (<< << 2.0, 4.0, 3.0 >>,
+	                            << 1.0, 1.0, 5.0 >>,
+	                            << 8.0, 0.0, 1.0 >> >>)
+	l_out := al.array_matrix (<< << 10.0 >>,
+	                             << 13.0 >>,
+	                             << 34.0 >> >>)
 	create l_algo.make (l_in.to_real)
 	l_algo.set_output (l_out.to_real)
 	l_algo.solve

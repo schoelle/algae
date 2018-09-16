@@ -38,6 +38,9 @@ feature -- Matrices
 		do
 			create {AL_DENSE_MATRIX} Result.make (a_height, a_width, 0.0)
 			Result.initialize_double_handling_from (Current)
+		ensure
+			correct_height: Result.height = a_height
+			correct_width: Result.width = a_width
 		end
 
 	matrix_filled (a_height, a_width: INTEGER; a_value: DOUBLE): AL_REAL_MATRIX
@@ -48,6 +51,9 @@ feature -- Matrices
 		do
 			create {AL_DENSE_MATRIX} Result.make (a_height, a_width, a_value)
 			Result.initialize_double_handling_from (Current)
+		ensure
+			correct_height: Result.height = a_height
+			correct_width: Result.width = a_width
 		end
 
 	symmetric_matrix (a_size: INTEGER): AL_REAL_MATRIX
@@ -57,6 +63,9 @@ feature -- Matrices
 		do
 			create {AL_SYMMETRIC_MATRIX} Result.make (a_size, 0.0)
 			Result.initialize_double_handling_from (Current)
+		ensure
+			correct_height: Result.height = a_size
+			correct_width: Result.width = a_size
 		end
 
 	symmetric_matrix_filled (a_size: INTEGER; a_value: DOUBLE): AL_REAL_MATRIX
@@ -66,6 +75,9 @@ feature -- Matrices
 		do
 			create {AL_SYMMETRIC_MATRIX} Result.make (a_size, a_value)
 			Result.initialize_double_handling_from (Current)
+		ensure
+			correct_height: Result.height = a_size
+			correct_width: Result.width = a_size
 		end
 
 	vector (a_size: INTEGER): AL_VECTOR
@@ -74,6 +86,8 @@ feature -- Matrices
 			positive_size: a_size >= 0
 		do
 			Result := vector_filled (a_size, 0.0)
+		ensure
+			correct_length: Result.count = a_size
 		end
 
 	vector_filled (a_size: INTEGER; a_value: DOUBLE): AL_VECTOR
@@ -86,6 +100,8 @@ feature -- Matrices
 			create l_matrix.make (a_size, 1, a_value)
 			l_matrix.initialize_double_handling_from (Current)
 			Result := l_matrix.column (1)
+		ensure
+			correct_length: Result.count = a_size
 		end
 
 	array_matrix (a_array: ARRAY [ARRAY [DOUBLE]]): AL_REAL_MATRIX
@@ -109,6 +125,8 @@ feature -- Matrices
 			Result.initialize_double_handling_from (Current)
 			Result.diagonal.fill (1.0)
 		ensure
+			correct_height: Result.height = a_size
+			correct_width: Result.width = a_size
 			is_unit: Result.is_unit
 		end
 

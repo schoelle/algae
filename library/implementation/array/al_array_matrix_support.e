@@ -16,7 +16,6 @@ feature -- Contract support
 			l_width: INTEGER
 			l_line: ARRAY [DOUBLE]
 		do
-			Result := True
 			Result := a_array.lower = 1
 			if a_array.count >= 1 then
 				Result := a_array.item (1).lower = 1

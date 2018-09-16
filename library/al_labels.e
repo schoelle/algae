@@ -22,7 +22,7 @@ feature -- Access
 	new_cursor: AL_LABEL_CURSOR
 			-- <Precursor>
 		do
-			create {AL_LABEL_CURSOR}Result.make (Current)
+			create {AL_LABEL_CURSOR} Result.make (Current)
 		end
 
 	underlying_matrix: AL_REAL_MATRIX
@@ -39,6 +39,8 @@ feature -- Access
 			loop
 				Result [l_cursor.index] := l_cursor.item
 			end
+		ensure
+			correct_length: Result.count = count
 		end
 
 feature -- Status report
