@@ -12,10 +12,10 @@
 			<exclude>/se$</exclude>
 			<exclude>/ve$</exclude>
 		</file_rule>
-		<setting name="console_application" value="false"/>
 		<option warning="true" is_obsolete_routine_type="true" manifest_array_type="mismatch_warning">
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
+		<setting name="console_application" value="false"/>
 		<capability>
 			<catcall_detection support="none"/>
 			<concurrency support="none"/>
@@ -27,6 +27,9 @@
 	<target name="tests" extends="algae">
 		<description>ALGAE Alegbra Library Testing</description>
 		<root class="ANY" feature="default_create"/>
+		<capability>
+			<concurrency support="none"/>
+		</capability>
 		<library name="testing" location="$ISE_LIBRARY\library\testing\testing.ecf"/>
 		<cluster name="tests" location=".\tests\" recursive="true"/>
 	</target>
@@ -34,7 +37,10 @@
 		<description>ALGAE Alegbra Library Benchmarking</description>
 		<root class="RUN_BENCHMARKS" feature="make"/>
 		<setting name="console_application" value="true"/>
+		<capability>
+			<concurrency support="none"/>
+		</capability>
+		<library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf"/>
 		<cluster name="benchmark" location=".\benchmark\" recursive="true"/>
-                <library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf"/>
 	</target>
 </system>
