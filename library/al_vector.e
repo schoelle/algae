@@ -413,7 +413,7 @@ feature -- Operations
 		end
 
 	add (a_value: DOUBLE)
-			-- Add `a_value' to all values
+			-- Add `a_value' to all values.
 		local
 			l_index: INTEGER
 		do

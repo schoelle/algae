@@ -1,4 +1,4 @@
-note
+	note
 	description: "Abstraction of a 2-dimentional matrix"
 	author: "Bernd Schoeller"
 	license: "Eiffel Forum License, Version 2"
@@ -195,7 +195,16 @@ feature -- Access
 		do
 			l_row_map := al.linear_map (a_max_row - a_min_row + 1, height, a_min_row)
 			l_column_map := al.linear_map (a_max_column - a_min_column + 1, width, a_min_column)
-			create {AL_PARTIAL_MATRIX}Result.make (Current, l_row_map, l_column_map)
+			Result := mapped_view (l_row_map, l_column_map)
+		end
+
+	mapped_view (a_row_map, a_column_map: AL_MAP): AL_MATRIX
+			-- Partial view using `a_row_map` and `a_column_map`
+		require
+			row_target_count_match: a_row_map.target_count = height
+			column_map_not_too_large: a_column_map.target_count = width
+		do
+			create {AL_PARTIAL_MATRIX}Result.make (Current, a_row_map, a_column_map)
 			Result.initialize_double_handling_from (Current)
 		end
 
@@ -321,6 +330,8 @@ feature -- Status
 	is_same (a_other: AL_MATRIX): BOOLEAN
 			-- Is `a_other' the same matrix as `Current'?
 			-- This includes all values and labels.
+		require
+			same_epsilon: epsilon = a_other.epsilon
 		local
 			l_col_index, l_row_index: INTEGER
 		do
@@ -670,26 +681,32 @@ feature -- Operations
 			value_set: same_double (item (a_row, a_column), a_value)
 		end
 
+	put_labeled (a_value: DOUBLE; a_row, a_column: STRING)
+			-- Store `a_value' at row labeled `a_row' and column labeled `a_column'.
+		require
+			has_row: row_labels.has (a_row)
+			has_column: column_labels.has (a_column)
+		do
+			put (a_value, row_labels.index (a_row), column_labels.index (a_column))
+		end
+
 	fill (a_value: DOUBLE)
 			-- Fill all elements of the matrix with `a_value'.
-		local
-			l_row_index, l_column_index: INTEGER
 		do
-			from
-				l_column_index := 1
-			until
-				l_column_index > width
-			loop
-				from
-					l_row_index := 1
-				until
-					l_row_index > height
-				loop
-					put (a_value, l_row_index, l_column_index)
-					l_row_index := l_row_index + 1
-				end
-				l_column_index := l_column_index + 1
-			end
+			column_by_column.fill (a_value)
+		end
+
+
+	scale (a_value: DOUBLE)
+			-- Scale all values by `a_value'.
+		do
+			column_by_column.scale (a_value)
+		end
+
+	add (a_value: DOUBLE)
+			-- Add `a_value' to all values.
+		do
+			column_by_column.add (a_value)
 		end
 
 	swap_rows (a_first_row, a_second_row: INTEGER)
